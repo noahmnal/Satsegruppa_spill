@@ -1,0 +1,1 @@
+/* This file contains the JavaScript functionality for the web page */
