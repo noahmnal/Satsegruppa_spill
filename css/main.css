@@ -1,1 +1,22 @@
 /* This file contains the styles for the web page */
+
+.gameBtn {
+    width: 520px;
+    padding: 21px;
+    font-size: 29px;
+    border: 2px solid #4af;
+    border-radius: 18px;
+    background: green;
+    color: rgb(119, 21, 21);
+    cursor: pointer;
+}
+
+.gameBtn:hover { 
+    transform: scale(1.08);         
+    background: limegreen;
+    box-shadow: 0 0 20px #4af; 
+}
+
+.background {
+    background-color: aqua;
+}
