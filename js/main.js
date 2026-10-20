@@ -1,5 +1,3 @@
-
-// 1. Tilstand
 let bane = 1;       // 0 = venstre, 1 = midten, 2 = høyre
 let poeng = 0;
 let fart = 5;       // piksler per steg
