@@ -1,23 +1,34 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");   // "penselen" vi tegner med
+const htmlScore = document.getElementById("score");
+const htmlHighScore = document.getElementById("highScore");
 
-const laneWidht = 200;
-const playerY = 440;    // hvor spilleren står (øverste kant)
+const laneWidht = 200;    // hvor spilleren står (øverste kant)
 const size = 50;         // størrelse på spiller og objekter
-
-let lane = 1;          // 0 = venstre, 1 = midten, 2 = høyre
+        // 0 = venstre, 1 = midten, 2 = høyre
 let score = 0;
 let speed = 5;         // piksler per steg
 let objects = [];      // alle ølbokser og hindringer på brettet
 let loop = null;       // spill-løkken, null når spillet står stille
 let message = "Trykk mellomrom for å starte";
 let canRatio = 33 //precent amout of cans
-let spawnRate = 5
+let spawnRate = 12
+let totalLanes = 5;
+const canvasWidth = 1000
 
 // Rekord: hentes fra nettleseren (blir 0 første gang)
 let highScore = Number(localStorage.getItem("rekord"));
+htmlHighScore.textContent = highScore; 
 
-class fallingObj {
+class Player {
+    constructor() {
+        this.lane = 1
+        this.y = 440
+        this.x = 100
+    }
+}
+
+class FallingObject {
     constructor(lane, type) {
         this.lane = lane
         this.y = -50
@@ -25,23 +36,37 @@ class fallingObj {
     }
 }
 
-
+let player = new Player();
+let keysDown = []
 // 2. Styring
 document.addEventListener("keydown", function (e) {
     let key = e.key.toLowerCase(); // så "A" (Caps Lock/Shift) også virker
-
-    if ((key === "arrowleft" || key === "a") && lane > 0) {
-        lane--;
-    }
-    if ((key === "arrowright" || key === "d") && lane < 2) {
-        lane++;
-    }
+    keysDown[key] = true; 
     if (key === " " && loop === null) {
         start();
     }
     draw();
+    document.addEventListener("keyup", function (e) {
+    keysDown[e.key.toLowerCase()] = false;   // tasten er sluppet
+    });
 });
 
+function movePlayer() {
+    if (keysDown["arrowup"] || keysDown["w"]) {
+        player.y -= 10
+    }
+    if (keysDown["arrowdown"] || keysDown["s"]) {
+        player.y += 10
+    }
+    if ((keysDown["arrowleft"] || keysDown["a"]) && player.x > 0) {
+        player.x -= 10;
+    }
+    if ((keysDown["arrowright"] || keysDown["d"]) && player.x < canvasWidth) {
+        player.x += 10;
+    }
+}
+
+let timer = 0
 // 3. Spill-løkken: kjøres ca. 33 ganger i sekundet
 function mainLoop() {
     if (Math.random() < spawnRate/100) {
@@ -49,19 +74,24 @@ function mainLoop() {
     };
     moveObjects();
     checkCollisions();
+    movePlayer()
     removePassed();
+    if (timer % 3 === 0) {
+        score ++;
+    }
     draw();
+    timer++;
 }
 
 // 4. Lage en ølboks eller et hinder øverst i en tilfeldig bane
 //    Nå er et objekt bare data – ingen HTML-element
 function spawnObject() {
-    let newLane = Math.floor(Math.random() * 3); // 0, 1 eller 2
-    let type = "beer";
+    let newLane = Math.floor(Math.random() * totalLanes); // 0, 1 eller 2
     if (Math.random() < canRatio/100) {
-        type = "obstacle";
+        objects.push(new FallingObject(newLane, "beer"));
+    } else {
+        objects.push(new FallingObject(newLane, "barrel"));
     }
-    objects.push(new fallingObj(newLane, type));
 }
 
 // 5. Flytte alle objekter nedover
@@ -75,18 +105,20 @@ function moveObjects() {
 function checkCollisions() {
     for (let i = objects.length - 1; i >= 0; i--) {
         let obj = objects[i];
+        let objX = obj.lane *laneWidht + (laneWidht - size) / 2
         //Collision detection
-        if (obj.lane === lane &&
-            obj.y + size > playerY &&
-            obj.y < playerY + size) {
+        if (objX < player.x + size &&
+            objX + size > player.x &&
+            obj.y < player.y + size &&
+            obj.y + size > player.y) {
             //not beer
-            if (obj.type === "obstacle") {
+            if (obj.type === "barrel") {
                 gameOver();
                 return;
             }
             //beer
-            score++;
-            if (score % 2 === 0) {
+            score+= 20;
+            if (score % 50 === 0) {
                 speed++;
                 spawnRate++;
                 if (canRatio <= 50) {
@@ -111,6 +143,7 @@ function removePassed() {
 
 // 8. Tegne alt på canvas
 function draw() {
+    htmlScore.textContent = score
     // Visk ut hele brettet
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -134,17 +167,19 @@ function draw() {
         let obj = objects[i];
         let x = obj.lane * laneWidht + laneWidht / 2; // midt i banen
         let y = obj.y + size / 2;
-        if (obj.type === "beer") {
-            ctx.fillText("🍺", x, y);
-        } else {
-            ctx.fillText("🛢️", x, y);
-        }
+            switch (obj.type) {
+                case "beer":
+                    ctx.fillText("🍺", x, y);
+                    break;
+                case "barrel":
+                    ctx.fillText("🛢️", x, y);
+                    break;
+            }
     }
 
     // Spilleren
     ctx.fillStyle = "#4da6ff";
-    let playerX = lane * laneWidht + (laneWidht - size) / 2;
-    ctx.fillRect(playerX, playerY, size, size);
+    ctx.fillRect(player.x, player.y, size, size);
 
     // Poeng og rekord
     ctx.fillStyle = "white";
@@ -184,7 +219,6 @@ function start() {
     objects = [];
     score = 0;
     speed = 5;
-    lane = 1;
     message = "";
     loop = setInterval(mainLoop, 30);
 }

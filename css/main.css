@@ -1,9 +1,20 @@
 /*dette er for bakgrunn og knapper*/
+@font-face {
+  font-family: "Jungle Fever";
+  src: url("../fonts/JungleFeverNF.ttf");
+}
+
+@font-face {
+  font-family: 'MinFavorittFont';
+  src: url("fonts/SuperFuntime-3zpLX.ttf") format('truetype'); 
+}
+
 .meny {
-  display: grid;
+ display: grid;
   grid-template-columns: 250px 250px;
   justify-content: center;
-  gap: 20px;
+  gap: 8px;
+  margin-top: 95px;
 }
 
 #startBtn {
@@ -17,7 +28,7 @@
   border: 6px solid #6e6e6e;
   border-radius: 14px;
 
-  font-family: "Luckiest Guy", sans-serif;
+  font-family: "MinFavorittFont", sans-serif;
   font-size: 32px;
   color: white;
   text-transform: uppercase;
@@ -31,24 +42,15 @@
 }
 
 .tittel {
-  width: 500px;
-  margin: 20px auto 40px;
-  padding: 15px 0;
-
-  background-color: #a9a9a9;
-  border: 6px solid #6e6e6e;
-  border-radius: 14px;
-
-  font-family: "Luckiest Guy", sans-serif;
-  font-size: 48px;
-  color: white;
+  font-family: "Jungle Fever", sans-serif;
+  font-size: 90px;
+  color: #e8dcb5;
   text-align: center;
-  text-transform: uppercase;
-  text-shadow: 3px 3px 0 #555;
+  text-shadow: 4px 4px 0 #3a3329;
 }
 
 .background {
-    background-image: url('/Users/fridtjofdigre/Satsegruppa_spill/Satsegruppa_spill/images/bakgrunn.png');
+    background-image: url('../images/mainbackground.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
