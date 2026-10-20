@@ -1,0 +1,41 @@
+@font-face {
+  font-family: 'MinFavorittFont';
+  src: url("fonts/super-funtime-font/SuperFuntime-3zpLX.ttf") format('truetype'); 
+  font-weight: normal;
+  font-style: normal;
+}
+
+.navneboks {
+    width: 600px;
+    padding: 21px;
+    font-size: 29px;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 18px;
+    background: rgb(93, 130, 50);
+    color: rgb(0, 0, 0);
+   
+
+}
+
+.navneboks:hover { 
+    transform: scale(1.08);         
+    background: rgb(230, 208, 166);
+    box-shadow: 0 0 20px #4af; 
+}   
+
+body {
+    background-image: url("../images/mainbackground.jpg");
+    background-size: cover;       
+    background-position: center;  
+    background-repeat: no-repeat; 
+
+    display: flex;
+    justify-content: center; /* Sentrerer vannrett */
+    align-items: center;     /* Sentrerer loddrett */
+    height: 100vh;           /* Fyller hele høyden på skjermen */
+    margin: 0;
+}
+
+*, *::before, *::after {
+  font-family: 'MinFavorittFont', sans-serif !important;
+}
