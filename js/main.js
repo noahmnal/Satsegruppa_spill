@@ -15,6 +15,8 @@ let canRatio = 33 //precent amout of cans
 let spawnRate = 12
 let totalLanes = 5;
 const canvasWidth = 1000
+const beerImage = new Image();
+beerImage.src = "../images/beerdrawing.png";
 
 // Rekord: hentes fra nettleseren (blir 0 første gang)
 let highScore = Number(localStorage.getItem("rekord"));
@@ -143,6 +145,7 @@ function removePassed() {
 
 // 8. Tegne alt på canvas
 function draw() {
+    
     htmlScore.textContent = score
     // Visk ut hele brettet
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -169,7 +172,7 @@ function draw() {
         let y = obj.y + size / 2;
             switch (obj.type) {
                 case "beer":
-                    ctx.fillText("🍺", x, y);
+                    ctx.drawImage(beerImage, x - size / 2, y - size / 2, size, size);
                     break;
                 case "barrel":
                     ctx.fillText("🛢️", x, y);
