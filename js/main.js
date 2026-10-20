@@ -14,6 +14,7 @@ let message = "Trykk mellomrom for å starte";
 let canRatio = 33 //precent amout of cans
 let spawnRate = 12
 let totalLanes = 5;
+const canvasWidth = 1000
 
 // Rekord: hentes fra nettleseren (blir 0 første gang)
 let highScore = Number(localStorage.getItem("rekord"));
@@ -23,7 +24,7 @@ class Player {
     constructor() {
         this.lane = 1
         this.y = 440
-
+        this.x = 100
     }
 }
 
@@ -36,28 +37,34 @@ class FallingObject {
 }
 
 let player = new Player();
-
+let keysDown = []
 // 2. Styring
 document.addEventListener("keydown", function (e) {
     let key = e.key.toLowerCase(); // så "A" (Caps Lock/Shift) også virker
-
-    if ((key === "arrowleft" || key === "a") && player.lane > 0) {
-        player.lane--;
-    }
-    if ((key === "arrowright" || key === "d") && player.lane < totalLanes-1) {
-        player.lane++;
-    }
-    if (key === "arrowup" || key === "w") {
-        player.y -= 10
-    }
-    if (key === "arrowdown" || key === "s") {
-        player.y += 10
-    }
+    keysDown[key] = true; 
     if (key === " " && loop === null) {
         start();
     }
     draw();
+    document.addEventListener("keyup", function (e) {
+    keysDown[e.key.toLowerCase()] = false;   // tasten er sluppet
+    });
 });
+
+function movePlayer() {
+    if (keysDown["arrowup"] || keysDown["w"]) {
+        player.y -= 10
+    }
+    if (keysDown["arrowdown"] || keysDown["s"]) {
+        player.y += 10
+    }
+    if ((keysDown["arrowleft"] || keysDown["a"]) && player.x > 0) {
+        player.x -= 10;
+    }
+    if ((keysDown["arrowright"] || keysDown["d"]) && player.x < canvasWidth) {
+        player.x += 10;
+    }
+}
 
 let timer = 0
 // 3. Spill-løkken: kjøres ca. 33 ganger i sekundet
@@ -67,6 +74,7 @@ function mainLoop() {
     };
     moveObjects();
     checkCollisions();
+    movePlayer()
     removePassed();
     if (timer % 3 === 0) {
         score ++;
@@ -97,10 +105,12 @@ function moveObjects() {
 function checkCollisions() {
     for (let i = objects.length - 1; i >= 0; i--) {
         let obj = objects[i];
+        let objX = obj.lane *laneWidht + (laneWidht - size) / 2
         //Collision detection
-        if (obj.lane === player.lane &&
-            obj.y + size > player.y &&
-            obj.y < player.y + size) {
+        if (objX < player.x + size &&
+            objX + size > player.x &&
+            obj.y < player.y + size &&
+            obj.y + size > player.y) {
             //not beer
             if (obj.type === "barrel") {
                 gameOver();
@@ -169,8 +179,7 @@ function draw() {
 
     // Spilleren
     ctx.fillStyle = "#4da6ff";
-    let playerX = player.lane * laneWidht + (laneWidht - size) / 2;
-    ctx.fillRect(playerX, player.y, size, size);
+    ctx.fillRect(player.x, player.y, size, size);
 
     // Poeng og rekord
     ctx.fillStyle = "white";
