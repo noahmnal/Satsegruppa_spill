@@ -1,22 +1,56 @@
-/* This file contains the styles for the web page */
-
-.gameBtn {
-    width: 520px;
-    padding: 21px;
-    font-size: 29px;
-    border: 2px solid #4af;
-    border-radius: 18px;
-    background: green;
-    color: rgb(119, 21, 21);
-    cursor: pointer;
+/*dette er for bakgrunn og knapper*/
+.meny {
+  display: grid;
+  grid-template-columns: 250px 250px;
+  justify-content: center;
+  gap: 20px;
 }
 
-.gameBtn:hover { 
-    transform: scale(1.08);         
-    background: limegreen;
-    box-shadow: 0 0 20px #4af; 
+#startBtn {
+  grid-column: span 2;
+}
+
+.gameBtn {
+  padding: 12px 0;
+
+  background-color: #a9a9a9;
+  border: 6px solid #6e6e6e;
+  border-radius: 14px;
+
+  font-family: "Luckiest Guy", sans-serif;
+  font-size: 32px;
+  color: white;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 #555;
+
+  cursor: pointer;
+}
+
+.gameBtn:hover {
+  transform: scale(1.05);
+}
+
+.tittel {
+  width: 500px;
+  margin: 20px auto 40px;
+  padding: 15px 0;
+
+  background-color: #a9a9a9;
+  border: 6px solid #6e6e6e;
+  border-radius: 14px;
+
+  font-family: "Luckiest Guy", sans-serif;
+  font-size: 48px;
+  color: white;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 3px 3px 0 #555;
 }
 
 .background {
-    background-color: aqua;
+    background-image: url('/Users/fridtjofdigre/Satsegruppa_spill/Satsegruppa_spill/images/bakgrunn.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
 }
