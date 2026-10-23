@@ -2,25 +2,33 @@ const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");   // "penselen" vi tegner med
 const htmlScore = document.getElementById("score");
 const htmlHighScore = document.getElementById("highScore");
-
-const laneWidht = 200;    // hvor spilleren står (øverste kant)
-const size = 50;         // størrelse på spiller og objekter
+       // størrelse på spiller og objekter
         // 0 = venstre, 1 = midten, 2 = høyre
 let score = 0;
 let speed = 5;         // piksler per steg
 let objects = [];      // alle ølbokser og hindringer på brettet
 let loop = null;       // spill-løkken, null når spillet står stille
 let message = "Trykk mellomrom for å starte";
-let canRatio = 33 //precent amout of cans
-let spawnRate = 12
-let totalLanes = 5;
+let spawnRate = 4
+let totalLanes = 12;
+
+const beerRate = 100
+const hiroRate = 60
+let barrelRate = 200
+
 const canvasWidth = 1000
+const canvasHeigth = 500
+const laneWidht = canvasWidth / totalLanes;    // hvor spilleren står (øverste kant)
+const size = canvasWidth / 20;  
 
 const beerImage = new Image();
 beerImage.src = "../images/gameDrawings/beerdrawing.png";
 
 const hiroImage = new Image();
 hiroImage.src = "../images/gameDrawings/hiroshima.png"
+
+const exphilImage = new Image();
+exphilImage.src = "../images/gameDrawings/exphilbok.png"
 
 // Rekord: hentes fra nettleseren (blir 0 første gang)
 let highScore = Number(localStorage.getItem("rekord"));
@@ -58,10 +66,11 @@ document.addEventListener("keydown", function (e) {
 });
 
 function movePlayer() {
-    if (keysDown["arrowup"] || keysDown["w"]) {
+    if ((keysDown["arrowup"] || keysDown["w"]) && player.y > 0) {
         player.y -= 10
     }
-    if (keysDown["arrowdown"] || keysDown["s"]) {
+    if ((keysDown["arrowdown"] || keysDown["s"]) && player.y < canvasHeigth-size) {
+        console.log(player.y)
         player.y += 10
     }
     if ((keysDown["arrowleft"] || keysDown["a"]) && player.x > 0) {
@@ -89,25 +98,32 @@ function mainLoop() {
     timer++;
 }
 
+//returns str type
 function dropTable() {
-    
+    //add rates here
+    const total = beerRate + hiroRate + barrelRate
+    const randInt = Math.random()*total
+    if (randInt <= beerRate) {
+        return "beer"
+    }
+    if (randInt <= beerRate + hiroRate) {
+        return "hiro"
+    } 
+    //add more here
+    else {
+        return "barrel"
+    }
+
+
+
 }
 
 // 4. Lage en ølboks eller et hinder øverst i en tilfeldig bane
 //    Nå er et objekt bare data – ingen HTML-element
 function spawnObject() {
     let newLane = Math.floor(Math.random() * totalLanes); // 0, 1 eller 2
-    if (Math.random() < canRatio/100) {
-        //Good drinks
-        if(Math.random() < 0.5) {
-            objects.push(new FallingObject(newLane, "beer"));
-        } else {
-              objects.push(new FallingObject(newLane, "hiro"));
-        }
-        //bad shit
-    } else {
-        objects.push(new FallingObject(newLane, "barrel"));
-    }
+    objects.push(new FallingObject(newLane, dropTable()));
+  
 }
 
 // 5. Flytte alle objekter nedover
@@ -128,23 +144,29 @@ function checkCollisions() {
             obj.y < player.y + size &&
             obj.y + size > player.y) {
             //not beer
-            if (obj.type === "barrel") {
-                gameOver();
-                return;
+            switch (obj.type) {
+                case "barrel":
+                    gameOver();
+                    return;
+                    break;
+                case "beer":
+                    score+= 20;
+                    break;
+
+                case "hiro":
+                    score += 100;
+                    break;
             }
-            //beer
-            score+= 20;
+            objects.splice(i, 1);
             if (score % 50 === 0) {
                 speed++;
                 spawnRate++;
-                if (canRatio <= 50) {
-                    canRatio++;
+                if (barrelRate <= 500) {
+                    barrelRate += 10;
                 }
-                
-
             }
-            objects.splice(i, 1);
         }
+            //beer
     }
 }
 
@@ -193,7 +215,7 @@ function draw() {
                     ctx.drawImage(hiroImage, x - size / 2, y - size / 2, size*4, size*4);
                     break;
                 case "barrel":
-                    ctx.fillText("🛢️", x, y);
+                    ctx.drawImage(exphilImage, x - size / 2, y - size / 2, size*4, size*4);
                     break;
             }
     }
