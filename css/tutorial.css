@@ -1,0 +1,29 @@
+@font-face {
+    font-family: 'MinFavorittFont';
+    src: url('fonts/SuperFuntime-3zpLX.ttf') format('truetype');
+}
+
+body {
+    background-image: url('../images/mainbackground.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.col-md-4 {
+    width: 600px;
+    padding: 21px;
+    font-size: 29px;
+    font-family: 'MinFavorittFont', sans-serif;
+    background: rgb(93, 130, 50);
+    color: black;
+    border: 2px solid black;
+    border-radius: 18px;
+    cursor: pointer;
+}
+
+.col-md-4:hover {
+    transform: scale(1.05);
+    background: rgb(230, 208, 166);
+    box-shadow: 0 0 20px #4af;
+}
