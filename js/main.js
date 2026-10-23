@@ -15,10 +15,15 @@ let message = "Trykk mellomrom for å starte";
 let spawnRate = 4;      // prosent sjanse for nytt objekt per steg
 let nextLevel = 50;     // poeng som trengs for neste fartsøkning
 let showHitboxes = false;
+let trakteTimer = 0
+const trakteSpeedBoost = 10
+let isTrakt = false;
 
 // Sjanser for hver type (vektet)
 const beerRate = 100;
 const hiroRate = 600;
+const fireBallRate = 300
+const traktRate = 10000;
 let barrelRate = 200;
 
 const beerImage = new Image();
@@ -31,6 +36,12 @@ hiroImage.src = mapPath + "hiroshima.png";
 const exphilImage = new Image();
 exphilImage.src = mapPath + "exphilbok.png";
 
+const fireBallImage = new Image();
+fireBallImage.src = mapPath + "fireball.png"
+
+const traktImage = new Image();
+traktImage.src = mapPath + "trakt.png"
+
 // Rekord: hentes fra nettleseren (blir 0 første gang)
 let highScore = Number(localStorage.getItem("rekord"));
 htmlHighScore.textContent = highScore;
@@ -41,6 +52,8 @@ class Player {
         this.y = 440;
         this.w = size;
         this.h = size;
+        this.baseMoveSpeed = 10
+        this.speed = this.baseMoveSpeed
     }
 }
 
@@ -62,6 +75,13 @@ class FallingObject {
                 this.w = size*1.5
                 this.h = size*1.6
                 break;
+            case "fireball":
+                this.w = size*0.6
+                this.h = size*0.9
+                break;
+            case "trakt":
+                this.w = size
+                this.h = size
         }
     }
 }
@@ -89,16 +109,16 @@ document.addEventListener("keyup", function (e) {
 
 function movePlayer() {
     if ((keysDown["arrowup"] || keysDown["w"]) && player.y > 0) {
-        player.y -= 10;
+        player.y -= player.speed;
     }
     if ((keysDown["arrowdown"] || keysDown["s"]) && player.y < canvasHeigth - player.h) {
-        player.y += 10;
+        player.y += player.speed;
     }
     if ((keysDown["arrowleft"] || keysDown["a"]) && player.x > 0) {
-        player.x -= 10;
+        player.x -= player.speed;
     }
     if ((keysDown["arrowright"] || keysDown["d"]) && player.x < canvasWidth - player.w) {
-        player.x += 10;
+        player.x += player.speed;
     }
 }
 
@@ -117,14 +137,24 @@ function mainLoop() {
     if (timer % 3 === 0) {
         score++;
     }
+
+    if (isTrakt) {
+        if (timer > trakteTimer + 100) {
+            isTrakt = false
+            player.speed = player.baseMoveSpeed
+        }
+    } else {
+        player.speed = player.baseMoveSpeed
+    }
     checkLevelUp();
     draw();
     timer++;
+    console.log(player.speed)
 }
 
 // Returnerer en tilfeldig type, vektet etter ratene
 function dropTable() {
-    const total = beerRate + hiroRate + barrelRate;
+    const total = beerRate + hiroRate + barrelRate + fireBallRate + traktRate;
     const randInt = Math.random() * total;
 
     if (randInt < beerRate) {
@@ -133,7 +163,13 @@ function dropTable() {
     if (randInt < beerRate + hiroRate) {
         return "hiro";
     }
-    return "barrel";
+    if (randInt < beerRate + hiroRate + fireBallRate) {
+         return "fireball";
+    }
+    if (randInt < beerRate + hiroRate + fireBallRate + traktRate) {
+        return "trakt"
+    }
+    return "barrel"
 }
 
 // 4. Lage et nytt objekt på en tilfeldig x-posisjon øverst
@@ -173,6 +209,14 @@ function checkCollisions() {
                     break;
                 case "hiro":
                     score += 100;
+                    break;
+                case "fireball":
+                    score += 50
+                    break;
+                case "trakt":
+                    isTrakt = true
+                    trakteTimer = timer
+                    player.speed += trakteSpeedBoost
                     break;
             }
             objects.splice(i, 1);   // fjern bare det du traff
@@ -220,6 +264,11 @@ function draw() {
             case "barrel":
                 ctx.drawImage(exphilImage, obj.x-70, obj.y-15, size*4.5, size*2.5);
                 break;
+            case "fireball":
+                 ctx.drawImage(fireBallImage, obj.x-75, obj.y-65, size*3.5, size*2.5);
+                 break;
+            case "trakt":
+                 ctx.drawImage(traktImage, obj.x-75, obj.y-65, size*3.5, size*2.5);
         }
     }
 
