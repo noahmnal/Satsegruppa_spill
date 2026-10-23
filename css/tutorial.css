@@ -1,11 +1,15 @@
 @font-face {
     font-family: 'MinFavorittFont';
-    src: url('fonts/SuperFuntime-3zpLX.ttf') format('truetype');
+    src: url('../fonts/SuperFuntime-3zpLX.ttf') format('truetype');
 }
 
 body {
     background-image: url('../resources/images/mainbackground.jpg');
     background-size: cover;
+}
+
+.row {
+    align-items: flex-start;
 }
 
 .col-md-4 {
