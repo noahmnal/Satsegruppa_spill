@@ -1,0 +1,6 @@
+.background {
+  background-image: url("../images/gamepagebakgrunn.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}

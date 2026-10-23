@@ -6,7 +6,9 @@
 
 @font-face {
   font-family: 'MinFavorittFont';
-  src: url("fonts/SuperFuntime-3zpLX.ttf") format('truetype'); 
+  src: url("../fonts/SuperFuntime-3zpLX.ttf") format('truetype'); 
+  font-weight: normal;
+  font-style: normal;
 }
 
 .meny {
