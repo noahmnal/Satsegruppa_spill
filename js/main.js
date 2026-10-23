@@ -2,171 +2,180 @@ const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");   // "penselen" vi tegner med
 const htmlScore = document.getElementById("score");
 const htmlHighScore = document.getElementById("highScore");
-       // størrelse på spiller og objekter
-        // 0 = venstre, 1 = midten, 2 = høyre
+
+const canvasWidth = 1000;
+const canvasHeigth = 500;
+const size = canvasWidth / 20;   // grunnstørrelse på spiller og objekter
+
 let score = 0;
-let speed = 5;         // piksler per steg
-let objects = [];      // alle ølbokser og hindringer på brettet
-let loop = null;       // spill-løkken, null når spillet står stille
+let speed = 5;          // piksler per steg
+let objects = [];       // alle objekter som faller
+let loop = null;        // spill-løkken, null når spillet står stille
 let message = "Trykk mellomrom for å starte";
-let spawnRate = 4
-let totalLanes = 12;
+let spawnRate = 4;      // prosent sjanse for nytt objekt per steg
+let nextLevel = 50;     // poeng som trengs for neste fartsøkning
+let showHitboxes = false;
 
-const beerRate = 100
-const hiroRate = 60
-let barrelRate = 200
-
-const canvasWidth = 1000
-const canvasHeigth = 500
-const laneWidht = canvasWidth / totalLanes;    // hvor spilleren står (øverste kant)
-const size = canvasWidth / 20;  
+// Sjanser for hver type (vektet)
+const beerRate = 100;
+const hiroRate = 60;
+let barrelRate = 200;
 
 const beerImage = new Image();
 beerImage.src = "../images/gameDrawings/beerdrawing.png";
 
 const hiroImage = new Image();
-hiroImage.src = "../images/gameDrawings/hiroshima.png"
+hiroImage.src = "../images/gameDrawings/hiroshima.png";
 
 const exphilImage = new Image();
-exphilImage.src = "../images/gameDrawings/exphilbok.png"
+exphilImage.src = "../images/gameDrawings/exphilbok.png";
 
 // Rekord: hentes fra nettleseren (blir 0 første gang)
 let highScore = Number(localStorage.getItem("rekord"));
-htmlHighScore.textContent = highScore; 
+htmlHighScore.textContent = highScore;
 
 class Player {
     constructor() {
-        this.lane = 1
-        this.y = 440
-        this.x = 100
+        this.x = 100;
+        this.y = 440;
+        this.w = size;
+        this.h = size;
     }
 }
 
 class FallingObject {
-    constructor(lane, type) {
-        this.lane = lane
-        this.y = -50
-        this.type = type
+    constructor(x, type) {
+        this.x = x;
+        this.y = -50;
+        this.type = type;
+        this.w = type === "beer" ? size : size * 2;  // størrelse per type
+        this.h = this.w;
     }
 }
 
 let player = new Player();
-let keysDown = []
+let keysDown = {};
+
 // 2. Styring
 document.addEventListener("keydown", function (e) {
     let key = e.key.toLowerCase(); // så "A" (Caps Lock/Shift) også virker
-    keysDown[key] = true; 
+    keysDown[key] = true;
+
     if (key === " " && loop === null) {
         start();
     }
+    if (key === "h") {
+        showHitboxes = !showHitboxes;
+    }
     draw();
-    document.addEventListener("keyup", function (e) {
+});
+
+document.addEventListener("keyup", function (e) {
     keysDown[e.key.toLowerCase()] = false;   // tasten er sluppet
-    });
 });
 
 function movePlayer() {
     if ((keysDown["arrowup"] || keysDown["w"]) && player.y > 0) {
-        player.y -= 10
+        player.y -= 10;
     }
-    if ((keysDown["arrowdown"] || keysDown["s"]) && player.y < canvasHeigth-size) {
-        console.log(player.y)
-        player.y += 10
+    if ((keysDown["arrowdown"] || keysDown["s"]) && player.y < canvasHeigth - player.h) {
+        player.y += 10;
     }
     if ((keysDown["arrowleft"] || keysDown["a"]) && player.x > 0) {
         player.x -= 10;
     }
-    if ((keysDown["arrowright"] || keysDown["d"]) && player.x < canvasWidth) {
+    if ((keysDown["arrowright"] || keysDown["d"]) && player.x < canvasWidth - player.w) {
         player.x += 10;
     }
 }
 
-let timer = 0
+let timer = 0;
 // 3. Spill-løkken: kjøres ca. 33 ganger i sekundet
 function mainLoop() {
-    if (Math.random() < spawnRate/100) {
-        spawnObject()
-    };
-    moveObjects();
-    checkCollisions();
-    movePlayer()
-    removePassed();
-    if (timer % 3 === 0) {
-        score ++;
+    if (Math.random() < spawnRate / 100) {
+        spawnObject();
     }
+    moveObjects();
+    movePlayer();
+    checkCollisions();
+    if (loop === null) return;   // spillet ble avsluttet i checkCollisions
+    removePassed();
+
+    if (timer % 3 === 0) {
+        score++;
+    }
+    checkLevelUp();
     draw();
     timer++;
 }
 
-//returns str type
+// Returnerer en tilfeldig type, vektet etter ratene
 function dropTable() {
-    //add rates here
-    const total = beerRate + hiroRate + barrelRate
-    const randInt = Math.random()*total
-    if (randInt <= beerRate) {
-        return "beer"
+    const total = beerRate + hiroRate + barrelRate;
+    const randInt = Math.random() * total;
+
+    if (randInt < beerRate) {
+        return "beer";
     }
-    if (randInt <= beerRate + hiroRate) {
-        return "hiro"
-    } 
-    //add more here
-    else {
-        return "barrel"
+    if (randInt < beerRate + hiroRate) {
+        return "hiro";
     }
-
-
-
+    return "barrel";
 }
 
-// 4. Lage en ølboks eller et hinder øverst i en tilfeldig bane
-//    Nå er et objekt bare data – ingen HTML-element
+// 4. Lage et nytt objekt på en tilfeldig x-posisjon øverst
 function spawnObject() {
-    let newLane = Math.floor(Math.random() * totalLanes); // 0, 1 eller 2
-    objects.push(new FallingObject(newLane, dropTable()));
-  
+    let obj = new FallingObject(0, dropTable());
+    obj.x = Math.random() * (canvasWidth - obj.w);  // holder seg innenfor brettet
+    objects.push(obj);
 }
 
 // 5. Flytte alle objekter nedover
 function moveObjects() {
     for (let obj of objects) {
-        obj.y = obj.y + speed;
+        obj.y += speed;
     }
+}
+
+// Sjekker om to rektangler overlapper
+function overlaps(a, b) {
+    return a.x < b.x + b.w &&
+           a.x + a.w > b.x &&
+           a.y < b.y + b.h &&
+           a.y + a.h > b.y;
 }
 
 // 6. Kollisjon (baklengs, fordi vi kan fjerne fra lista underveis)
 function checkCollisions() {
     for (let i = objects.length - 1; i >= 0; i--) {
         let obj = objects[i];
-        let objX = obj.lane *laneWidht + (laneWidht - size) / 2
-        //Collision detection
-        if (objX < player.x + size &&
-            objX + size > player.x &&
-            obj.y < player.y + size &&
-            obj.y + size > player.y) {
-            //not beer
+
+        if (overlaps(player, obj)) {
             switch (obj.type) {
                 case "barrel":
                     gameOver();
                     return;
-                    break;
                 case "beer":
-                    score+= 20;
+                    score += 20;
                     break;
-
                 case "hiro":
                     score += 100;
                     break;
             }
-            objects.splice(i, 1);
-            if (score % 50 === 0) {
-                speed++;
-                spawnRate++;
-                if (barrelRate <= 500) {
-                    barrelRate += 10;
-                }
-            }
+            objects.splice(i, 1);   // fjern bare det du traff
         }
-            //beer
+    }
+}
+
+// Øker vanskelighetsgraden hver 50. poeng
+function checkLevelUp() {
+    while (score >= nextLevel) {
+        speed++;
+        spawnRate++;
+        if (barrelRate < 500) {
+            barrelRate += 10;
+        }
+        nextLevel += 50;
     }
 }
 
@@ -181,48 +190,40 @@ function removePassed() {
 
 // 8. Tegne alt på canvas
 function draw() {
-    
-    htmlScore.textContent = score
+    htmlScore.textContent = score;
+
     // Visk ut hele brettet
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Stiplede linjer mellom banene
-    ctx.strokeStyle = "#777";
-    ctx.setLineDash([20, 15]);
-    ctx.lineWidth = 2;
-    for (let i = 1; i < 3; i++) {
-        ctx.beginPath();
-        ctx.moveTo(i * laneWidht, 0);
-        ctx.lineTo(i * laneWidht, canvas.height);
-        ctx.stroke();
-    }
-    ctx.setLineDash([]); // slå av stiplingen igjen
-
-    // Objektene (emoji tegnes som tekst)
-    ctx.font = "40px sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    for (let i = 0; i < objects.length; i++) {
-        let obj = objects[i];
-        let x = obj.lane * laneWidht + laneWidht / 2; // midt i banen
-        let y = obj.y + size / 2;
-            switch (obj.type) {
-                case "beer":
-                    ctx.drawImage(beerImage, x - size / 2, y - size / 2, size, size);
-                    break;
-                case "hiro":
-                    console.log("hiroooo")
-                    ctx.drawImage(hiroImage, x - size / 2, y - size / 2, size*4, size*4);
-                    break;
-                case "barrel":
-                    ctx.drawImage(exphilImage, x - size / 2, y - size / 2, size*4, size*4);
-                    break;
-            }
+    // Objektene
+    for (let obj of objects) {
+        switch (obj.type) {
+            case "beer":
+                ctx.drawImage(beerImage, obj.x, obj.y, obj.w, obj.h);
+                break;
+            case "hiro":
+                ctx.drawImage(hiroImage, obj.x, obj.y, obj.w, obj.h);
+                break;
+            case "barrel":
+                ctx.drawImage(exphilImage, obj.x, obj.y, obj.w, obj.h);
+                break;
+        }
     }
 
     // Spilleren
     ctx.fillStyle = "#4da6ff";
-    ctx.fillRect(player.x, player.y, size, size);
+    ctx.fillRect(player.x, player.y, player.w, player.h);
+
+    // Hitboxer (trykk H)
+    if (showHitboxes) {
+        ctx.lineWidth = 2;
+        for (let obj of objects) {
+            ctx.strokeStyle = obj.type === "barrel" ? "red" : "lime";
+            ctx.strokeRect(obj.x, obj.y, obj.w, obj.h);
+        }
+        ctx.strokeStyle = "yellow";
+        ctx.strokeRect(player.x, player.y, player.w, player.h);
+    }
 
     // Poeng og rekord
     ctx.fillStyle = "white";
@@ -253,6 +254,7 @@ function gameOver() {
     if (score > highScore) {
         highScore = score;
         localStorage.setItem("rekord", highScore);
+        htmlHighScore.textContent = highScore;
     }
     message = "Game over! Du fikk " + score + " poeng.\nTrykk mellomrom for å prøve igjen";
     draw();
@@ -262,6 +264,11 @@ function start() {
     objects = [];
     score = 0;
     speed = 5;
+    spawnRate = 4;
+    barrelRate = 200;
+    nextLevel = 50;
+    timer = 0;
+    player = new Player();
     message = "";
     loop = setInterval(mainLoop, 30);
 }
