@@ -22,13 +22,14 @@ const hiroRate = 60;
 let barrelRate = 200;
 
 const beerImage = new Image();
-beerImage.src = "../images/gameDrawings/beerdrawing.png";
+const mapPath = "../resources/images/gameDrawings/"
+beerImage.src = mapPath + "beerdrawing.png";
 
 const hiroImage = new Image();
-hiroImage.src = "../images/gameDrawings/hiroshima.png";
+hiroImage.src = mapPath + "hiroshima.png";
 
 const exphilImage = new Image();
-exphilImage.src = "../images/gameDrawings/exphilbok.png";
+exphilImage.src = mapPath + "exphilbok.png";
 
 // Rekord: hentes fra nettleseren (blir 0 første gang)
 let highScore = Number(localStorage.getItem("rekord"));
