@@ -25,6 +25,5 @@ body {
 }
 
 .col-md-4:hover {
-    background: rgb(230, 208, 166);
     box-shadow: 0 0 20px #4af;
 }
