@@ -18,7 +18,7 @@ let showHitboxes = false;
 
 // Sjanser for hver type (vektet)
 const beerRate = 100;
-const hiroRate = 60;
+const hiroRate = 600;
 let barrelRate = 200;
 
 const beerImage = new Image();
@@ -49,8 +49,20 @@ class FallingObject {
         this.x = x;
         this.y = -50;
         this.type = type;
-        this.w = type === "beer" ? size : size * 2;  // størrelse per type
-        this.h = this.w;
+        switch (type) {
+            case "beer":
+                this.w = size
+                this.h = size
+                break;
+            case "hiro":
+                this.w = size*0.9
+                this.h = size
+                break;
+            case "barrel":
+                this.w = size*1.5
+                this.h = size*1.6
+                break;
+        }
     }
 }
 
@@ -176,7 +188,7 @@ function checkLevelUp() {
         if (barrelRate < 500) {
             barrelRate += 10;
         }
-        nextLevel += 50;
+        nextLevel += 100;
     }
 }
 
@@ -203,10 +215,10 @@ function draw() {
                 ctx.drawImage(beerImage, obj.x, obj.y, obj.w, obj.h);
                 break;
             case "hiro":
-                ctx.drawImage(hiroImage, obj.x, obj.y, obj.w, obj.h);
+                ctx.drawImage(hiroImage, obj.x-110, obj.y-45, size*5.2, size*3.2);
                 break;
             case "barrel":
-                ctx.drawImage(exphilImage, obj.x, obj.y, obj.w, obj.h);
+                ctx.drawImage(exphilImage, obj.x-70, obj.y-15, size*4.5, size*2.5);
                 break;
         }
     }
