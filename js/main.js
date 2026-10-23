@@ -15,8 +15,12 @@ let canRatio = 33 //precent amout of cans
 let spawnRate = 12
 let totalLanes = 5;
 const canvasWidth = 1000
+
 const beerImage = new Image();
-beerImage.src = "../images/beerdrawing.png";
+beerImage.src = "../images/gameDrawings/beerdrawing.png";
+
+const hiroImage = new Image();
+hiroImage.src = "../images/gameDrawings/hiroshima.png"
 
 // Rekord: hentes fra nettleseren (blir 0 første gang)
 let highScore = Number(localStorage.getItem("rekord"));
@@ -85,12 +89,22 @@ function mainLoop() {
     timer++;
 }
 
+function dropTable() {
+    
+}
+
 // 4. Lage en ølboks eller et hinder øverst i en tilfeldig bane
 //    Nå er et objekt bare data – ingen HTML-element
 function spawnObject() {
     let newLane = Math.floor(Math.random() * totalLanes); // 0, 1 eller 2
     if (Math.random() < canRatio/100) {
-        objects.push(new FallingObject(newLane, "beer"));
+        //Good drinks
+        if(Math.random() < 0.5) {
+            objects.push(new FallingObject(newLane, "beer"));
+        } else {
+              objects.push(new FallingObject(newLane, "hiro"));
+        }
+        //bad shit
     } else {
         objects.push(new FallingObject(newLane, "barrel"));
     }
@@ -173,6 +187,10 @@ function draw() {
             switch (obj.type) {
                 case "beer":
                     ctx.drawImage(beerImage, x - size / 2, y - size / 2, size, size);
+                    break;
+                case "hiro":
+                    console.log("hiroooo")
+                    ctx.drawImage(hiroImage, x - size / 2, y - size / 2, size*4, size*4);
                     break;
                 case "barrel":
                     ctx.fillText("🛢️", x, y);
