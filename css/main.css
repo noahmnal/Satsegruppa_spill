@@ -52,7 +52,7 @@
 }
 
 .background {
-    background-image: url('../images/mainbackground.jpg');
+    background-image: url('../resources/images/mainbackground.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
