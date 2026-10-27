@@ -1,69 +1,59 @@
-// ================= FORHÅNDSLASTING AV LYDER (helt øverst) =================
-const hoverLyd = new Audio("../resources/sounds/hoverclick.wav");
-const klikkLyd = new Audio("../resources/sounds/clickmain.wav");
-hoverLyd.preload = "auto";
-klikkLyd.preload = "auto";
-
-// Spiller lyden fra start hver gang
-function spill(lyd) {
-    lyd.currentTime = 0;
-    lyd.play().catch(() => {});
-}
-
-// ================= START-KNAPP =================
+//Start-knapp
 document.getElementById("startBtn").addEventListener("mouseenter", () => {
-    spill(hoverLyd); // hover-lyd
+    new Audio("../resources/sounds/hoverclick.wav").play(); // hover-lyd
 });
 document.getElementById("startBtn").addEventListener("click", () => {
-    spill(klikkLyd); // klikk-lyd
+    new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
     setTimeout(() => {
         window.location.href = "../html/gamePage.html";
     }, 200);
 });
 
-// ================= OM OSS-KNAPP =================
+//Om oss-knapp
 document.getElementById("omossBtn").addEventListener("mouseenter", () => {
-    spill(hoverLyd); // hover-lyd
+    new Audio("../resources/sounds/hoverclick.wav").play(); // hover-lyd
 });
 document.getElementById("omossBtn").addEventListener("click", () => {
-    spill(klikkLyd); // klikk-lyd
+    new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
     setTimeout(() => {
         window.location.href = "../html/aboutUs.html";
     }, 200);
 });
 
-// ================= TUTORIAL-KNAPP =================
+//Tutorial-knapp
 document.getElementById("tutorialBtn").addEventListener("mouseenter", () => {
-    spill(hoverLyd); // hover-lyd
+    new Audio("../resources/sounds/hoverclick.wav").play(); // hover-lyd
 });
 document.getElementById("tutorialBtn").addEventListener("click", () => {
-    spill(klikkLyd); // klikk-lyd
+    new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
     setTimeout(() => {
         window.location.href = "../html/tutorial.html";
     }, 200);
 });
 
-// ================= NIVÅ-KNAPP =================
+//Nivå-knapp
 document.getElementById("nivåBtn").addEventListener("mouseenter", () => {
-    spill(hoverLyd); // hover-lyd
+    new Audio("../resources/sounds/hoverclick.wav").play(); // hover-lyd
 });
 document.getElementById("nivåBtn").addEventListener("click", () => {
-    spill(klikkLyd); // klikk-lyd
+    new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
     setTimeout(() => {
         window.location.href = "../html/Nivå.html";
     }, 200);
 });
 
-// ================= HIGHSCORE-KNAPP =================
+//Highscore knapp
 document.getElementById("hsBtn").addEventListener("mouseenter", () => {
-    spill(hoverLyd); // hover-lyd
+    new Audio("../resources/sounds/hoverclick.wav").play(); // hover-lyd
 });
 document.getElementById("hsBtn").addEventListener("click", () => {
-    spill(klikkLyd); // klikk-lyd
+    new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
     setTimeout(() => {
-    window.location.href = "../html/highscore.html";
+        window.location.href = "../html/HighScore.html";
     }, 200);
 });
+
+
 let nivåer = ["easy", "medium", "hard", "Fadderuka"];
 let nivå = Number(localStorage.getItem("nivå"));
 let nivåKnapp = document.getElementById("nivåBtn");
