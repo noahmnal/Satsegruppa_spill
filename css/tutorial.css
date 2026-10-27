@@ -1,3 +1,4 @@
+
 @font-face {
     font-family: 'MinFavorittFont';
     src: url('../fonts/SuperFuntime-3zpLX.ttf') format('truetype');
@@ -8,18 +9,25 @@ body {
     background-size: cover;
 }
 
-.row {
+#tutorial-row {
+    display: flex;
     align-items: flex-start;
+    justify-content: center;
+    gap: 15px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .col-md-4 {
+    flex: 0 0 600px;
     width: 600px;
+    box-sizing: border-box;
     padding: 21px;
     font-size: 29px;
     font-family: 'MinFavorittFont', sans-serif;
     background: rgb(93, 130, 50);
     color: black;
-    border: 2px solid black;
+    border: none;
     border-radius: 18px;
     cursor: pointer;
 }
@@ -38,15 +46,19 @@ body {
     text-align: left;
 }
 
-.lukket_div{
+.lukket_div {
     background-color: rgb(93, 130, 50);
     color: black;
     font-size: 29px;
     padding: 21px;
-    border: 2px solid black;
+    border: 2px solid #e8dcb5;
     line-height: normal;
     text-align: center;
     font-family: 'MinFavorittFont', sans-serif;
-    border: 1px solid white;
+    border-radius: 18px;
 }
 
+.col-md-4 > div {
+    border: none !important;
+    box-shadow: none !important;
+}
