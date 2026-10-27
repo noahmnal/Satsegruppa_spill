@@ -46,7 +46,7 @@ document.getElementById("hsBtn").addEventListener("mouseenter", () => {
 document.getElementById("hsBtn").addEventListener("click", () => {
     new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
     setTimeout(() => {
-    window.location.href = "../html/HighScore.html";
+    window.location.href = "../html/highscore.html";
     }, 200);
 });
 let nivåer = ["Lett", "Medium", "Vanskelig", "Fadderuka"];

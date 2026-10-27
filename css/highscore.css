@@ -1,0 +1,33 @@
+
+body {
+    background-image: url('../resources/images/mainbackground.jpg');
+    background-size: cover;
+}
+
+.leaderboard {
+    width: 600px;
+    max-width: 90%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: rgb(93, 130, 50);
+    border-radius: 18px;
+    text-align: center;
+    font-family: 'MinFavorittFont', sans-serif;
+}
+
+.leaderboard h1 {
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+.leaderboard ol {
+    text-align: left;
+    padding-left: 40px;
+    margin: 0;
+    font-size: 24px;
+}
+
+.leaderboard li {
+    height: 40px;
+    padding: 5px;
+}
