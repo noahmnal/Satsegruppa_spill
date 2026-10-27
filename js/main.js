@@ -8,24 +8,25 @@ const canvasHeigth = 500;
 const size = canvasWidth / 20;   // grunnstørrelse på spiller og objekter
 
 let score = 0;
-let speed = 5;          // piksler per steg
-let objects = [];       // alle objekter som faller
-let loop = null;        // spill-løkken, null når spillet står stille
+let speed = 5;          //objects speed
+let objects = [];       //list with all objects
+let loop = null;        // main loop
 let message = "Trykk mellomrom for å starte";
-let spawnRate = 4;      // prosent sjanse for nytt objekt per steg
-let nextLevel = 50;     // poeng som trengs for neste fartsøkning
+let spawnRate = 4;
+let nextLevel = 50; //points to reach next level
 let showHitboxes = false;
 let trakteTimer = 0
 const trakteSpeedBoost = 10
 let isTrakt = false;
 
-// Sjanser for hver type (vektet)
+// Spawn ratios
 const beerRate = 100;
-const hiroRate = 600;
-const fireBallRate = 300
-const traktRate = 10000;
-let barrelRate = 200;
+const hiroRate = 30;
+const fireBallRate = 40
+const traktRate = 200;
+let barrelRate = 150;
 
+//images
 const beerImage = new Image();
 const mapPath = "../resources/images/gameDrawings/"
 beerImage.src = mapPath + "beerdrawing.png";
@@ -42,9 +43,10 @@ fireBallImage.src = mapPath + "fireball.png"
 const traktImage = new Image();
 traktImage.src = mapPath + "trakt.png"
 
-// Rekord: hentes fra nettleseren (blir 0 første gang)
+// Records
 let highScore = Number(localStorage.getItem("rekord"));
 htmlHighScore.textContent = highScore;
+
 
 class Player {
     constructor() {
@@ -80,8 +82,8 @@ class FallingObject {
                 this.h = size*0.9
                 break;
             case "trakt":
-                this.w = size
-                this.h = size
+                this.w = size*1.1
+                this.h = size*1.7
         }
     }
 }
@@ -89,9 +91,9 @@ class FallingObject {
 let player = new Player();
 let keysDown = {};
 
-// 2. Styring
+// 2. movement, using keysDown[] to allow user to hold down the button
 document.addEventListener("keydown", function (e) {
-    let key = e.key.toLowerCase(); // så "A" (Caps Lock/Shift) også virker
+    let key = e.key.toLowerCase();
     keysDown[key] = true;
 
     if (key === " " && loop === null) {
@@ -104,8 +106,9 @@ document.addEventListener("keydown", function (e) {
 });
 
 document.addEventListener("keyup", function (e) {
-    keysDown[e.key.toLowerCase()] = false;   // tasten er sluppet
+    keysDown[e.key.toLowerCase()] = false;
 });
+
 
 function movePlayer() {
     if ((keysDown["arrowup"] || keysDown["w"]) && player.y > 0) {
@@ -123,7 +126,7 @@ function movePlayer() {
 }
 
 let timer = 0;
-// 3. Spill-løkken: kjøres ca. 33 ganger i sekundet
+
 function mainLoop() {
     if (Math.random() < spawnRate / 100) {
         spawnObject();
@@ -152,7 +155,7 @@ function mainLoop() {
     console.log(player.speed)
 }
 
-// Returnerer en tilfeldig type, vektet etter ratene
+// 
 function dropTable() {
     const total = beerRate + hiroRate + barrelRate + fireBallRate + traktRate;
     const randInt = Math.random() * total;
@@ -172,21 +175,20 @@ function dropTable() {
     return "barrel"
 }
 
-// 4. Lage et nytt objekt på en tilfeldig x-posisjon øverst
+//spawns an object at the top of the screen
 function spawnObject() {
     let obj = new FallingObject(0, dropTable());
     obj.x = Math.random() * (canvasWidth - obj.w);  // holder seg innenfor brettet
     objects.push(obj);
 }
 
-// 5. Flytte alle objekter nedover
 function moveObjects() {
     for (let obj of objects) {
         obj.y += speed;
     }
 }
 
-// Sjekker om to rektangler overlapper
+//checks hitboxes
 function overlaps(a, b) {
     return a.x < b.x + b.w &&
            a.x + a.w > b.x &&
@@ -194,7 +196,6 @@ function overlaps(a, b) {
            a.y + a.h > b.y;
 }
 
-// 6. Kollisjon (baklengs, fordi vi kan fjerne fra lista underveis)
 function checkCollisions() {
     for (let i = objects.length - 1; i >= 0; i--) {
         let obj = objects[i];
@@ -219,12 +220,12 @@ function checkCollisions() {
                     player.speed += trakteSpeedBoost
                     break;
             }
-            objects.splice(i, 1);   // fjern bare det du traff
+            objects.splice(i, 1);   // removes hit object
         }
     }
 }
 
-// Øker vanskelighetsgraden hver 50. poeng
+//Increaces level and diff
 function checkLevelUp() {
     while (score >= nextLevel) {
         speed++;
@@ -236,7 +237,6 @@ function checkLevelUp() {
     }
 }
 
-// 7. Fjerne objekter som har passert bunnen
 function removePassed() {
     for (let i = objects.length - 1; i >= 0; i--) {
         if (objects[i].y > canvas.height) {
@@ -245,14 +245,11 @@ function removePassed() {
     }
 }
 
-// 8. Tegne alt på canvas
 function draw() {
     htmlScore.textContent = score;
 
-    // Visk ut hele brettet
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Objektene
     for (let obj of objects) {
         switch (obj.type) {
             case "beer":
@@ -268,15 +265,14 @@ function draw() {
                  ctx.drawImage(fireBallImage, obj.x-75, obj.y-65, size*3.5, size*2.5);
                  break;
             case "trakt":
-                 ctx.drawImage(traktImage, obj.x-75, obj.y-65, size*3.5, size*2.5);
+                 ctx.drawImage(traktImage, obj.x-173, obj.y-75, size*10, size*6.5);
         }
     }
 
-    // Spilleren
     ctx.fillStyle = "#4da6ff";
     ctx.fillRect(player.x, player.y, player.w, player.h);
 
-    // Hitboxer (trykk H)
+    // Hitboxes
     if (showHitboxes) {
         ctx.lineWidth = 2;
         for (let obj of objects) {
@@ -287,7 +283,7 @@ function draw() {
         ctx.strokeRect(player.x, player.y, player.w, player.h);
     }
 
-    // Poeng og rekord
+    // Points and records
     ctx.fillStyle = "white";
     ctx.font = "18px sans-serif";
     ctx.textAlign = "left";
@@ -296,7 +292,7 @@ function draw() {
     ctx.textAlign = "right";
     ctx.fillText("Rekord: " + highScore, canvas.width - 10, 10);
 
-    // Melding (start / game over)
+    // start / end msg
     if (message !== "") {
         ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
         ctx.fillRect(0, 180, canvas.width, 120);
@@ -335,4 +331,4 @@ function start() {
     loop = setInterval(mainLoop, 30);
 }
 
-draw(); // tegn startskjermen
+draw();
