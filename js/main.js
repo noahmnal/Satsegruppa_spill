@@ -307,7 +307,7 @@ function draw() {
                 break;
             case "fireball":
                 ctx.drawImage(fire50Image, p.x-75, p.y-65, size*3.5, size*2.5);
-                ctx.drawImage(fireTextImage, p.x-110, p.y-130, size*5.2, size*3.2);
+                ctx.drawImage(fireTextImage, p.x-110, p.y-130, size*5.7, size*3.7);
                  break;
         }
     }

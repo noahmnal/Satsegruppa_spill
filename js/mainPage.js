@@ -1,50 +1,65 @@
-// Start-knapp
+// ================= FORHÅNDSLASTING AV LYDER (helt øverst) =================
+const hoverLyd = new Audio("../resources/sounds/hoverclick.wav");
+const klikkLyd = new Audio("../resources/sounds/clickmain.wav");
+hoverLyd.preload = "auto";
+klikkLyd.preload = "auto";
+
+// Spiller lyden fra start hver gang
+function spill(lyd) {
+    lyd.currentTime = 0;
+    lyd.play().catch(() => {});
+}
+
+// ================= START-KNAPP =================
 document.getElementById("startBtn").addEventListener("mouseenter", () => {
-    new Audio("../resources/sounds/hoverclick.wav").play(); // hover-lyd
+    spill(hoverLyd); // hover-lyd
 });
 document.getElementById("startBtn").addEventListener("click", () => {
-    new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
+    spill(klikkLyd); // klikk-lyd
     setTimeout(() => {
-       window.location.href = "../html/gamePage.html";
+        window.location.href = "../html/gamePage.html";
     }, 200);
 });
 
-// Om oss-knapp
+// ================= OM OSS-KNAPP =================
 document.getElementById("omossBtn").addEventListener("mouseenter", () => {
-    new Audio("../resources/sounds/hoverclick.wav").play(); // hover-lyd
+    spill(hoverLyd); // hover-lyd
 });
 document.getElementById("omossBtn").addEventListener("click", () => {
-    new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
+    spill(klikkLyd); // klikk-lyd
     setTimeout(() => {
-    window.location.href = "../html/aboutUs.html";
+        window.location.href = "../html/aboutUs.html";
     }, 200);
 });
 
-// Tutorial-knapp
+// ================= TUTORIAL-KNAPP =================
 document.getElementById("tutorialBtn").addEventListener("mouseenter", () => {
-    new Audio("../resources/sounds/hoverclick.wav").play(); // hover-lyd
+    spill(hoverLyd); // hover-lyd
 });
 document.getElementById("tutorialBtn").addEventListener("click", () => {
-    new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
+    spill(klikkLyd); // klikk-lyd
     setTimeout(() => {
-    window.location.href = "../html/tutorial.html";
+        window.location.href = "../html/tutorial.html";
     }, 200);
 });
 
-// Nivå-knapp 
+// ================= NIVÅ-KNAPP =================
 document.getElementById("nivåBtn").addEventListener("mouseenter", () => {
-    new Audio("../resources/sounds/hoverclick.wav").play(); // hover-lyd
+    spill(hoverLyd); // hover-lyd
 });
 document.getElementById("nivåBtn").addEventListener("click", () => {
-    new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
+    spill(klikkLyd); // klikk-lyd
+    setTimeout(() => {
+        window.location.href = "../html/Nivå.html";
+    }, 200);
 });
 
-// Highscore-knapp 
+// ================= HIGHSCORE-KNAPP =================
 document.getElementById("hsBtn").addEventListener("mouseenter", () => {
-    new Audio("../resources/sounds/hoverclick.wav").play(); // hover-lyd
+    spill(hoverLyd); // hover-lyd
 });
 document.getElementById("hsBtn").addEventListener("click", () => {
-    new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
+    spill(klikkLyd); // klikk-lyd
     setTimeout(() => {
     window.location.href = "../html/highscore.html";
     }, 200);
