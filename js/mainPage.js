@@ -49,7 +49,7 @@ document.getElementById("hsBtn").addEventListener("click", () => {
     window.location.href = "../html/highscore.html";
     }, 200);
 });
-let nivåer = ["Lett", "Medium", "Vanskelig", "Fadderuka"];
+let nivåer = ["easy", "medium", "hard", "Fadderuka"];
 let nivå = Number(localStorage.getItem("nivå"));
 let nivåKnapp = document.getElementById("nivåBtn");
 let tilbakeTimer;
