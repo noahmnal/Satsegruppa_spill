@@ -8,25 +8,42 @@ const canvasHeigth = 500;
 const size = canvasWidth / 20;   // grunnstørrelse på spiller og objekter
 
 let score = 0;
-let speed = 5;          //objects speed
+let fallingSpeed = 5;          //objects speed
 let objects = [];
 let popups = []       //list with all objects
 let loop = null;        // main loop
 let message = "Trykk mellomrom for å starte";
-let spawnRate = 4;
-let nextLevel = 50; //points to reach next level
+let spawnRate;
+let nextLevel; //points to reach next level
 let showHitboxes = false;
 let trakteTimer = 0
+let difficulty = ""
 const trakteSpeedBoost = 10
 const popLifetime = 30
 let isTrakt = false;
 
 // Spawn ratios
-const beerRate = 100;
-const hiroRate = 300;
-const fireBallRate = 400
-const traktRate = 20;
+let beerRate = 100;
+let hiroRate = 300;
+let fireBallRate = 400
+let traktRate = 20;
 let barrelRate = 150;
+
+// Playtesting stats
+const difficulties = [{
+        speed: 4, spawnRate: 3, nextLevel: 80,
+        beerRate: 150, hiroRate: 300, fireBallRate: 400, traktRate: 30, barrelRate: 120
+    }, {
+        speed: 5, spawnRate: 4, nextLevel: 50,
+        beerRate: 100, hiroRate: 300, fireBallRate: 400, traktRate: 20, barrelRate: 200
+    }, {
+        speed: 7, spawnRate: 5, nextLevel: 40,
+        beerRate: 80, hiroRate: 250, fireBallRate: 350, traktRate: 15, barrelRate: 300
+    }, {
+        speed: 9, spawnRate: 6, nextLevel: 30,
+        beerRate: 60, hiroRate: 200, fireBallRate: 300, traktRate: 10, barrelRate: 400
+    }
+];
 
 //images
 const beerImage = createImage("beerdrawing.png")
@@ -59,7 +76,7 @@ class Player {
         this.y = 440;
         this.w = size;
         this.h = size;
-        this.baseMoveSpeed = 10
+        this.baseMoveSpeed = 14
         this.speed = this.baseMoveSpeed
     }
 }
@@ -195,7 +212,7 @@ function spawnObject() {
 
 function moveObjects() {
     for (let obj of objects) {
-        obj.y += speed;
+        obj.y += fallingSpeed;
     }
 }
 
@@ -241,12 +258,12 @@ function checkCollisions() {
 //Increaces level and diff
 function checkLevelUp() {
     while (score >= nextLevel) {
-        speed++;
+        fallingSpeed++;
         spawnRate++;
         if (barrelRate < 500) {
             barrelRate += 10;
         }
-        nextLevel += 100;
+        nextLevel += nextLevel;
     }
 }
 
@@ -290,7 +307,7 @@ function draw() {
                 break;
             case "fireball":
                 ctx.drawImage(fire50Image, p.x-75, p.y-65, size*3.5, size*2.5);
-                ctx.drawImage(fireTextImage, p.x-110, p.y-130, size*5.2, size*3.2);
+                ctx.drawImage(fireTextImage, p.x-110, p.y-130, size*5.7, size*3.7);
                  break;
         }
     }
@@ -345,12 +362,20 @@ function gameOver() {
 }
 
 function start() {
+    // Les vanskelighetsgrad først, så verdiene kan settes ut fra den
+    difficulty = localStorage.getItem("nivå")
+    const d = difficulties[difficulty] || difficulties.middels;
+    popups = []  
     objects = [];
     score = 0;
-    speed = 5;
-    spawnRate = 4;
-    barrelRate = 200;
-    nextLevel = 50;
+    fallingSpeed = d.speed;
+    spawnRate = d.spawnRate;
+    nextLevel = d.nextLevel;
+    beerRate = d.beerRate;
+    hiroRate = d.hiroRate;
+    fireBallRate = d.fireBallRate;
+    traktRate = d.traktRate;
+    barrelRate = d.barrelRate;
     timer = 0;
     player = new Player();
     message = "";
