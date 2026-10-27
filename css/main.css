@@ -1,12 +1,12 @@
 /*dette er for bakgrunn og knapper*/
 @font-face {
   font-family: "Jungle Fever";
-  src: url("../fonts/JungleFeverNF.ttf");
+  src: url("../resources/fonts/JungleFeverNF.ttf");
 }
 
 @font-face {
   font-family: 'MinFavorittFont';
-  src: url("../fonts/SuperFuntime-3zpLX.ttf") format('truetype'); 
+  src: url("../resources/fonts/SuperFuntime-3zpLX.ttf") format('truetype'); 
   font-weight: normal;
   font-style: normal;
 }
