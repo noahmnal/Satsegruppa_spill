@@ -27,3 +27,26 @@ body {
 .col-md-4:hover {
     box-shadow: 0 0 20px #4af;
 }
+
+.apnet_div {
+    background-color: #e8dcb5;
+    color: #3a3329;
+    font-size: 18px;
+    padding: 25px;
+    border: 3px solid #6e8b3d;
+    line-height: 1.4;
+    text-align: left;
+}
+
+.lukket_div{
+    background-color: rgb(93, 130, 50);
+    color: black;
+    font-size: 29px;
+    padding: 21px;
+    border: 2px solid black;
+    line-height: normal;
+    text-align: center;
+    font-family: 'MinFavorittFont', sans-serif;
+    border: 1px solid white;
+}
+
