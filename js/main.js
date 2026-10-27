@@ -9,7 +9,8 @@ const size = canvasWidth / 20;   // grunnstørrelse på spiller og objekter
 
 let score = 0;
 let speed = 5;          //objects speed
-let objects = [];       //list with all objects
+let objects = [];
+let popups = []       //list with all objects
 let loop = null;        // main loop
 let message = "Trykk mellomrom for å starte";
 let spawnRate = 4;
@@ -17,31 +18,35 @@ let nextLevel = 50; //points to reach next level
 let showHitboxes = false;
 let trakteTimer = 0
 const trakteSpeedBoost = 10
+const popLifetime = 30
 let isTrakt = false;
 
 // Spawn ratios
 const beerRate = 100;
-const hiroRate = 30;
-const fireBallRate = 40
-const traktRate = 200;
+const hiroRate = 300;
+const fireBallRate = 400
+const traktRate = 20;
 let barrelRate = 150;
 
 //images
-const beerImage = new Image();
-const mapPath = "../resources/images/gameDrawings/"
-beerImage.src = mapPath + "beerdrawing.png";
+const beerImage = createImage("beerdrawing.png")
+const hiroImage = createImage("hiroshima.png")
+const exphilImage = createImage("exphilbok.png")
+const fireBallImage = createImage("fireball.png")
+const traktImage = createImage("trakt.png")
+const fire50Image = createImage("50fireball.png")
+const fireTextImage = createImage("fireballtext.png")
+const hiro100Image = createImage("100hiroshima.png")
+const hiroTextImage = createImage("hiroshimatext.png")
 
-const hiroImage = new Image();
-hiroImage.src = mapPath + "hiroshima.png";
 
-const exphilImage = new Image();
-exphilImage.src = mapPath + "exphilbok.png";
 
-const fireBallImage = new Image();
-fireBallImage.src = mapPath + "fireball.png"
-
-const traktImage = new Image();
-traktImage.src = mapPath + "trakt.png"
+function createImage(imgName) {
+    const mapPath = "../resources/images/gameDrawings/"
+    const img =  new Image() 
+    img.src = mapPath + imgName
+    return img;
+}
 
 // Records
 let highScore = Number(localStorage.getItem("rekord"));
@@ -87,6 +92,7 @@ class FallingObject {
         }
     }
 }
+
 
 let player = new Player();
 let keysDown = {};
@@ -149,6 +155,11 @@ function mainLoop() {
     } else {
         player.speed = player.baseMoveSpeed
     }
+    for (let i = 0; i < popups.length; i++) {
+        if (timer > popups[i].deathSentence) {
+            popups.splice(i, 1)
+        }
+    }
     checkLevelUp();
     draw();
     timer++;
@@ -210,9 +221,11 @@ function checkCollisions() {
                     break;
                 case "hiro":
                     score += 100;
+                     popups.push({x: obj.x, y:obj.y, type: obj.type, deathSentence: timer+popLifetime})
                     break;
                 case "fireball":
                     score += 50
+                    popups.push({x: obj.x, y:obj.y, type: obj.type, deathSentence: timer+popLifetime})
                     break;
                 case "trakt":
                     isTrakt = true
@@ -266,6 +279,19 @@ function draw() {
                  break;
             case "trakt":
                  ctx.drawImage(traktImage, obj.x-173, obj.y-75, size*10, size*6.5);
+        }
+    }
+
+    for (let p of popups) {
+        switch (p.type) {
+            case "hiro":
+                ctx.drawImage(hiro100Image, p.x-110, p.y-75, size*5.2, size*5.2);
+                ctx.drawImage(hiroTextImage, p.x-135, p.y-120, size*6.7, size*5.2);
+                break;
+            case "fireball":
+                ctx.drawImage(fire50Image, p.x-75, p.y-65, size*3.5, size*2.5);
+                ctx.drawImage(fireTextImage, p.x-110, p.y-130, size*5.2, size*3.2);
+                 break;
         }
     }
 
