@@ -15,17 +15,7 @@ function klikk(boks) {
 
         if (boks.id === 'keybinds') {
 
-            boks.innerHTML = `Du kan styre karakteren med enten WASD-tastene eller piltastene på tastaturet. Begge fungerer på samme måte, så du kan bruke det du synes er enklest.
-
-A eller ←: Beveg deg til venstre.
-
-D eller →: Beveg deg til høyre.
-
-W eller ↑: Beveg deg oppover.
-
-S eller ↓: Beveg deg nedover.
-
-Spillet foregår i 2D, så du kan bevege deg både sidelengs og opp og ned. Bruk tastene til å komme deg bort til gjenstandene som faller ned, samtidig som du prøver å unngå Tenk-bøkene. Det kan være lurt å holde inne en tast for å bevege seg kontinuerlig i en retning.`;
+            boks.innerHTML = `Du kan styre karakteren med enten WASD-tastene eller piltastene på tastaturet. Begge fungerer på samme måte, så du kan bruke det du synes er enklest.<br><br>A eller ←: Beveg deg til venstre.<br><br>D eller →: Beveg deg til høyre.<br><br>W eller ↑: Beveg deg oppover.<br><br>S eller ↓: Beveg deg nedover.<br><br>Spillet foregår i 2D, så du kan bevege deg både sidelengs og opp og ned. Bruk tastene til å komme deg bort til gjenstandene som faller ned, samtidig som du prøver å unngå Tenk-bøkene. Det kan være lurt å holde inne en tast for å bevege seg kontinuerlig i en retning.`;
 
         }
 

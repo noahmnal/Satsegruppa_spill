@@ -16,11 +16,13 @@ body {
     gap: 15px;
     margin-left: 0;
     margin-right: 0;
+    width: 100%;
 }
 
 .col-md-4 {
     flex: 0 0 600px;
     width: 600px;
+    max-width: 100%;
     box-sizing: border-box;
     padding: 21px;
     font-size: 29px;
@@ -61,4 +63,39 @@ body {
 .col-md-4 > div {
     border: none !important;
     box-shadow: none !important;
+}
+
+/* Mindre skjermer */
+@media (max-width: 1250px) {
+    #tutorial-row {
+        flex-wrap: wrap;
+    }
+
+    .col-md-4 {
+        flex: 1 1 450px;
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* Mobil */
+@media (max-width: 600px) {
+    #tutorial-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .col-md-4 {
+        flex: 0 1 auto;
+        width: 100%;
+        max-width: 100%;
+        padding: 15px;
+        font-size: 23px;
+    }
+
+    .apnet_div {
+        font-size: 16px;
+        padding: 18px;
+    }
 }
