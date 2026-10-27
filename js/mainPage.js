@@ -61,12 +61,10 @@ document.getElementById("hsBtn").addEventListener("mouseenter", () => {
 document.getElementById("hsBtn").addEventListener("click", () => {
     spill(klikkLyd); // klikk-lyd
     setTimeout(() => {
-        window.location.href = "../html/HighScore.html";
+    window.location.href = "../html/highscore.html";
     }, 200);
 });
-
-
-let nivåer = ["Lett", "Medium", "Vanskelig", "Fadderuka"];
+let nivåer = ["easy", "medium", "hard", "Fadderuka"];
 let nivå = Number(localStorage.getItem("nivå"));
 let nivåKnapp = document.getElementById("nivåBtn");
 let tilbakeTimer;
