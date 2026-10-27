@@ -4,11 +4,6 @@
     src: url('../fonts/SuperFuntime-3zpLX.ttf') format('truetype');
 }
 
-body {
-    background-image: url('../resources/images/mainbackground.jpg');
-    background-size: cover;
-}
-
 #tutorial-row {
     display: flex;
     align-items: flex-start;
