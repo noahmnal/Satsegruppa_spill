@@ -58,3 +58,16 @@
     background-size: cover;
     background-attachment: fixed;
 }
+
+.lett { color: limegreen; }
+.medium { color: orange; }
+.vanskelig { color: red; }
+
+.fadderuka {
+  color: red;
+  animation: regnbue 1s linear infinite;
+}
+
+@keyframes regnbue {
+  to { filter: hue-rotate(360deg); }
+}
