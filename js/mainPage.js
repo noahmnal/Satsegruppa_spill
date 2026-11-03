@@ -38,7 +38,6 @@ document.getElementById("nivåBtn").addEventListener("mouseenter", () => {
 document.getElementById("nivåBtn").addEventListener("click", () => {
     new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
     setTimeout(() => {
-        window.location.href = "../html/Nivå.html";
     }, 200);
 });
 
