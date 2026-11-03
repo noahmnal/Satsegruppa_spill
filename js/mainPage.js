@@ -38,7 +38,6 @@ document.getElementById("nivåBtn").addEventListener("mouseenter", () => {
 document.getElementById("nivåBtn").addEventListener("click", () => {
     new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
     setTimeout(() => {
-        window.location.href = "../html/Nivå.html";
     }, 200);
 });
 
@@ -66,10 +65,4 @@ nivåKnapp.addEventListener("click", () => {
     }
     nivåKnapp.textContent = nivåer[nivå];
     nivåKnapp.className = "gameBtn " + nivåer[nivå].toLowerCase();
-
-    clearTimeout(tilbakeTimer);
-    tilbakeTimer = setTimeout(() => {
-        nivåKnapp.textContent = "Nivå";
-        nivåKnapp.className = "gameBtn";
-    }, 2000);
 });

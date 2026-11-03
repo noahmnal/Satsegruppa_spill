@@ -2,10 +2,10 @@ const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");   // "penselen" vi tegner med
 const htmlScore = document.getElementById("score");
 const htmlHighScore = document.getElementById("highScore");
-
 const canvasWidth = 1000;
 const canvasHeigth = 500;
 const size = canvasWidth / 20;   // grunnstørrelse på spiller og objekter
+const traktDuration = 130;
 
 const speedBoostSound = new Audio("../resources/sounds/speedboost.wav");
 
@@ -25,25 +25,25 @@ const popLifetime = 30
 let isTrakt = false;
 
 // Spawn ratios
-let beerRate = 100;
-let hiroRate = 300;
-let fireBallRate = 400
-let traktRate = 20;
-let barrelRate = 150;
+let beerRate;
+let hiroRate;
+let fireBallRate;
+let traktRate;
+let barrelRate;
 
 // Playtesting stats
 const difficulties = [{
-        speed: 4, spawnRate: 3, nextLevel: 80,
-        beerRate: 150, hiroRate: 300, fireBallRate: 400, traktRate: 30, barrelRate: 120
+        speed: 4, spawnRate: 3, nextLevel: 100,
+        beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 7, barrelRate: 120
     }, {
-        speed: 5, spawnRate: 4, nextLevel: 50,
-        beerRate: 100, hiroRate: 300, fireBallRate: 400, traktRate: 20, barrelRate: 200
+        speed: 5, spawnRate: 4, nextLevel: 80,
+        beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 10, barrelRate: 200
     }, {
-        speed: 7, spawnRate: 5, nextLevel: 40,
-        beerRate: 80, hiroRate: 250, fireBallRate: 350, traktRate: 15, barrelRate: 300
+        speed: 7, spawnRate: 7, nextLevel: 60,
+        beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 15, barrelRate: 220
     }, {
-        speed: 9, spawnRate: 6, nextLevel: 30,
-        beerRate: 60, hiroRate: 200, fireBallRate: 300, traktRate: 10, barrelRate: 400
+        speed: 9, spawnRate: 12, nextLevel: 45,
+        beerRate: 60, hiroRate: 30, fireBallRate: 50, traktRate: 25, barrelRate: 170
     }
 ];
 
@@ -162,13 +162,12 @@ function mainLoop() {
     if (loop === null) return;   // spillet ble avsluttet i checkCollisions
     removePassed();
 
-    if (timer % 3 === 0) {
+    if (timer % 10 === 0) {
         score++;
     }
 
     if (isTrakt) {
-        speedBoostSound.play()
-        if (timer > trakteTimer + 100) {
+        if (timer > trakteTimer + traktDuration) {
             isTrakt = false
             player.speed = player.baseMoveSpeed
             speedBoostSound.currentTime = 0; 
