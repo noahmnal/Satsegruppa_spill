@@ -7,6 +7,8 @@ const canvasWidth = 1000;
 const canvasHeigth = 500;
 const size = canvasWidth / 20;   // grunnstørrelse på spiller og objekter
 
+const speedBoostSound = new Audio("../resources/sounds/speedboost.wav");
+
 let score = 0;
 let fallingSpeed = 5;          //objects speed
 let objects = [];
@@ -165,9 +167,12 @@ function mainLoop() {
     }
 
     if (isTrakt) {
+        speedBoostSound.play()
         if (timer > trakteTimer + 100) {
             isTrakt = false
             player.speed = player.baseMoveSpeed
+            speedBoostSound.currentTime = 0; 
+            speedBoostSound.pause()
         }
     } else {
         player.speed = player.baseMoveSpeed
@@ -233,17 +238,24 @@ function checkCollisions() {
                 case "barrel":
                     gameOver();
                     return;
+
                 case "beer":
+                    new Audio("../resources/sounds/beerclink.wav").play(); // beer-sound
                     score += 20;
                     break;
+
                 case "hiro":
+                    new Audio("../resources/sounds/hirobomb.wav").play(); // hiro-lyd
                     score += 100;
                      popups.push({x: obj.x, y:obj.y, type: obj.type, deathSentence: timer+popLifetime})
                     break;
+
                 case "fireball":
+                    new Audio("../resources/sounds/firewoosh.wav").play(); // fireball
                     score += 50
                     popups.push({x: obj.x, y:obj.y, type: obj.type, deathSentence: timer+popLifetime})
                     break;
+
                 case "trakt":
                     isTrakt = true
                     trakteTimer = timer
