@@ -61,10 +61,4 @@ nivåKnapp.addEventListener("click", () => {
     }
     nivåKnapp.textContent = nivåer[nivå];
     nivåKnapp.className = "gameBtn " + nivåer[nivå].toLowerCase();
-
-    clearTimeout(tilbakeTimer);
-    tilbakeTimer = setTimeout(() => {
-        nivåKnapp.textContent = "Nivå";
-        nivåKnapp.className = "gameBtn";
-    }, 2000);
 });
