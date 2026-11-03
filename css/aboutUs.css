@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'MinFavorittFont';
-  src: url("fonts/super-funtime-font/SuperFuntime-3zpLX.ttf") format('truetype'); 
+  src: url("../resources/fonts/SuperFuntime-3zpLX.ttf") format('truetype'); 
   font-weight: normal;
   font-style: normal;
 }
@@ -11,7 +11,7 @@
     font-size: 29px;
     border: 2px solid rgb(0, 0, 0);
     border-radius: 18px;
-    background: rgb(93, 130, 50);
+    background: rgb(255, 238, 197);
     color: rgb(0, 0, 0);
    
 
