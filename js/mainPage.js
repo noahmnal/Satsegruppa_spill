@@ -31,16 +31,6 @@ document.getElementById("tutorialBtn").addEventListener("click", () => {
     }, 200);
 });
 
-//Nivå-knapp
-document.getElementById("nivåBtn").addEventListener("mouseenter", () => {
-    new Audio("../resources/sounds/hoverclick.wav").play(); // hover-lyd
-});
-document.getElementById("nivåBtn").addEventListener("click", () => {
-    new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
-    setTimeout(() => {
-    }, 200);
-});
-
 //Highscore knapp
 document.getElementById("hsBtn").addEventListener("mouseenter", () => {
     new Audio("../resources/sounds/hoverclick.wav").play(); // hover-lyd
@@ -50,19 +40,4 @@ document.getElementById("hsBtn").addEventListener("click", () => {
     setTimeout(() => {
         window.location.href = "../html/HighScore.html";
     }, 200);
-});
-
-
-let nivåer = ["easy", "medium", "hard", "Fadderuka"];
-let nivå = Number(localStorage.getItem("nivå"));
-let nivåKnapp = document.getElementById("nivåBtn");
-let tilbakeTimer;
-
-nivåKnapp.addEventListener("click", () => {
-    if (nivåKnapp.textContent !== "Nivå") {
-        nivå = (nivå + 1) % nivåer.length;
-        localStorage.setItem("nivå", nivå);
-    }
-    nivåKnapp.textContent = nivåer[nivå];
-    nivåKnapp.className = "gameBtn " + nivåer[nivå].toLowerCase();
 });

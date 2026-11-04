@@ -19,7 +19,6 @@ let spawnRate;
 let nextLevel; //points to reach next level
 let showHitboxes = false;
 let trakteTimer = 0
-let difficulty = ""
 const trakteSpeedBoost = 10
 const popLifetime = 30
 let isTrakt = false;
@@ -373,9 +372,8 @@ function gameOver() {
 }
 
 function start() {
-    // Les vanskelighetsgrad først, så verdiene kan settes ut fra den
-    difficulty = localStorage.getItem("nivå")
-    const d = difficulties[difficulty] || difficulties.middels;
+    const selectedDifficulty = Number(localStorage.getItem("nivå"));
+    const d = difficulties[selectedDifficulty] || difficulties[0];
     popups = []  
     objects = [];
     score = 0;
