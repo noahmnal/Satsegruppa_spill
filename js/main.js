@@ -1,7 +1,5 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");   // "penselen" vi tegner med
-const htmlScore = document.getElementById("score");
-const htmlHighScore = document.getElementById("highScore");
 const canvasWidth = 1000;
 const canvasHeigth = 500;
 const size = canvasWidth / 20;   // grunnstørrelse på spiller og objekter
@@ -67,8 +65,34 @@ function createImage(imgName) {
 }
 
 // Records
-let highScore = Number(localStorage.getItem("rekord"));
-htmlHighScore.textContent = highScore;
+function loadHighScores() {
+    const storedScores = localStorage.getItem("highscores");
+    if (storedScores === null) {
+        return [];
+    }
+
+    try {
+        const scores = JSON.parse(storedScores);
+        if (!Array.isArray(scores)) {
+            console.error("Lagrede highscores er ikke en liste.");
+            return [];
+        }
+        return scores
+            .filter(value => Number.isFinite(value) && value > 0)
+            .sort((a, b) => b - a)
+            .slice(0, 10);
+    } catch (error) {
+        console.error("Kunne ikke lese lagrede highscores.", error);
+        return [];
+    }
+}
+
+const highScores = loadHighScores();
+const savedRecord = Number(localStorage.getItem("rekord"));
+if (localStorage.getItem("highscores") === null && Number.isFinite(savedRecord) && savedRecord > 0) {
+    highScores.push(savedRecord);
+}
+let highScore = Number.isFinite(savedRecord) ? Math.max(savedRecord, ...highScores) : Math.max(0, ...highScores);
 
 
 class Player {
@@ -286,7 +310,6 @@ function removePassed() {
 }
 
 function draw() {
-    htmlScore.textContent = score;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -362,10 +385,15 @@ function draw() {
 function gameOver() {
     clearInterval(loop);
     loop = null;
+    if (score > 0) {
+        highScores.push(score);
+        highScores.sort((a, b) => b - a);
+        highScores.splice(10);
+        localStorage.setItem("highscores", JSON.stringify(highScores));
+    }
     if (score > highScore) {
         highScore = score;
         localStorage.setItem("rekord", highScore);
-        htmlHighScore.textContent = highScore;
     }
     message = "Game over! Du fikk " + score + " poeng.\nTrykk mellomrom for å prøve igjen";
     draw();
