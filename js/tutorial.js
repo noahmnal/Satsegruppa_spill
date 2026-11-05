@@ -9,13 +9,13 @@ function klikk(boks) {
 
         if (boks.id === 'hvordan_spille') {
 
-            boks.innerHTML = `Målet med spillet er å få så mange poeng som mulig ved å fange gjenstander som faller ned på boka. Du beveger karakteren frem og tilbake nederst på skjermen for å fange dem før de treffer bakken. Det gjelder å følge med på hva som faller ned, og bevege seg raskt nok til å rekke bort til riktig sted. Det er ikke alle gjenstandene som er bra å fange. Pils gir deg 20 poeng, fireball gir 50 poeng, og Hiroshima gir hele 100 poeng. Disse bør du prøve å fange for å få en høy poengsum. Trakten gjør at karakteren beveger seg raskere, noe som gjør det lettere å rekke bort til gjenstandene som faller ned. Du må derimot passe deg for Tenk-boka. Hvis du fanger den, dør du, og spillet er over. Derfor må du hele tiden vurdere hvilke gjenstander du skal gå etter, og hvilke du bør unngå. Øverst på skjermen ser du hvor mange poeng du har fått, og hvilken rekord du må prøve å slå. Jo flere poeng du samler, desto bedre. Målet er rett og slett å fange flest mulig av de riktige gjenstandene, unngå Tenk-bøkene og sette en ny rekord.`;
+            boks.innerHTML = `Målet med spillet er å få så mange poeng som mulig ved å fange gjenstander som faller ned på boka. Man beveger karakteren frem og tilbake nederst på skjermen for å fange dem før de treffer bakken. Man prøver å å følge med på tingene som faller ned og bevege seg så raskt nok til å rekke bort til riktig sted. Pils gir deg 20 poeng, fireball 50 poeng, og Hiroshima gir 100. Trakten gjør at karakteren beveger seg raskere. Da blir det lettere å rekke bort til gjenstandene som faller ned. Men Hvis man er nær Tenk-boka dør man og spillet er over, så den må man dodge. Øverst på skjermen går poengene opp mens du spiller, ved siden av står det hvilken rekord du må prøve å slå. Målet er rett og slett å fange flest mulig av de riktige tingene, unngå Tenk-bøkene og sette en ny rekord som kommer på leaderboard.`;
 
         }
 
         if (boks.id === 'keybinds') {
 
-            boks.innerHTML = `Du kan styre karakteren med enten WASD-tastene eller piltastene på tastaturet. Begge fungerer på samme måte, så du kan bruke det du synes er enklest.<br><br>A eller ←: Beveg deg til venstre.<br><br>D eller →: Beveg deg til høyre.<br><br>W eller ↑: Beveg deg oppover.<br><br>S eller ↓: Beveg deg nedover.<br><br>Spillet foregår i 2D, så du kan bevege deg både sidelengs og opp og ned. Bruk tastene til å komme deg bort til gjenstandene som faller ned, samtidig som du prøver å unngå Tenk-bøkene. Det kan være lurt å holde inne en tast for å bevege seg kontinuerlig i en retning.`;
+            boks.innerHTML = `Du styrer firkanten med WASD-tastene eller piltastene. Begge funker på samme måte, så det er bare å bruke det man synes er lettest. </br> A eller ← er venstre. </br>D eller er høyre. </br>W eller ↑ er opp. </br>S eller ↓ er nedover. </br>Spillet er 2D. Smart å holde inne en tast for å bevege seg kontinuerlig i en retning, men husk at de blir mer sensitive med trakta.`;
 
         }
 
