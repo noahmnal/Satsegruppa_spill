@@ -373,6 +373,8 @@ function draw() {
 function gameOver() {
     speedBoostSound.currentTime = 4; 
     speedBoostSound.pause()
+    const gameOverSound = new Audio("../resources/sounds/gameover.wav");
+    gameOverSound.play()
     clearInterval(loop);
     loop = null;
     if (score > 0) {
