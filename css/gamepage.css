@@ -24,12 +24,19 @@
   margin-bottom: 0;
 }
 
-canvas {
-  border: 2px solid black;
+#bok {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  width: 1300px;
+  height: 813px;
+  padding-bottom: 60px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../resources/images/bok.jpg") center / 100% 100% no-repeat;
 }
 
 .tilbake-knapp {
