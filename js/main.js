@@ -339,7 +339,7 @@ function draw() {
                 ctx.drawImage(hiroTextImage, p.x-135, p.y-120, size*6.7, size*5.2);
                 break;
             case "fireball":
-                ctx.drawImage(fire50Image, p.x-75, p.y-65, size*3.5, size*2.5);
+                ctx.drawImage(fire50Image, p.x-75, p.y-60, size*3.5, size*2.5);
                 ctx.drawImage(fireTextImage, p.x-110, p.y-130, size*5.7, size*3.7);
                  break;
         }
