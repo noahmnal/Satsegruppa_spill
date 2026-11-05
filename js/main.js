@@ -1,8 +1,8 @@
 const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");   // "penselen" vi tegner med
+const ctx = canvas.getContext("2d");
 const canvasWidth = 1000;
 const canvasHeigth = 500;
-const size = canvasWidth / 20;   // grunnstørrelse på spiller og objekter
+const size = canvasWidth / 20;
 const traktDuration = 130;
 
 const speedBoostSound = new Audio("../resources/sounds/speedboost.wav");
@@ -65,34 +65,12 @@ function createImage(imgName) {
 }
 
 // Records
-function loadHighScores() {
-    const storedScores = localStorage.getItem("highscores");
-    if (storedScores === null) {
-        return [];
-    }
-
-    try {
-        const scores = JSON.parse(storedScores);
-        if (!Array.isArray(scores)) {
-            console.error("Lagrede highscores er ikke en liste.");
-            return [];
-        }
-        return scores
-            .filter(value => Number.isFinite(value) && value > 0)
-            .sort((a, b) => b - a)
-            .slice(0, 10);
-    } catch (error) {
-        console.error("Kunne ikke lese lagrede highscores.", error);
-        return [];
-    }
-}
-
-const highScores = loadHighScores();
-const savedRecord = Number(localStorage.getItem("rekord"));
-if (localStorage.getItem("highscores") === null && Number.isFinite(savedRecord) && savedRecord > 0) {
+const highScores = JSON.parse(localStorage.getItem("highscores") || "[]");
+const savedRecord = Number(localStorage.getItem("rekord")) || 0;
+if (highScores.length === 0 && savedRecord > 0) {
     highScores.push(savedRecord);
 }
-let highScore = Number.isFinite(savedRecord) ? Math.max(savedRecord, ...highScores) : Math.max(0, ...highScores);
+let highScore = Math.max(savedRecord, ...highScores);
 
 
 class Player {
@@ -193,7 +171,6 @@ function mainLoop() {
         if (timer > trakteTimer + traktDuration) {
             isTrakt = false
             player.speed = player.baseMoveSpeed
-            speedBoostSound.currentTime = 0; 
             speedBoostSound.pause()
         }
     } else {
@@ -267,19 +244,26 @@ function checkCollisions() {
                     break;
 
                 case "hiro":
-                    new Audio("../resources/sounds/hirobomb.wav").play(); // hiro-lyd
+                    let hiroSound = new Audio("../resources/sounds/hirobomb.wav"); // hiro-lyd
+                    hiroSound.volume = 0.5
+                    hiroSound.play()
+
                     score += 100;
                      popups.push({x: obj.x, y:obj.y, type: obj.type, deathSentence: timer+popLifetime})
                     break;
 
                 case "fireball":
-                    new Audio("../resources/sounds/firewoosh.wav").play(); // fireball
+                    let fireSound = new Audio("../resources/sounds/firewoosh.wav") // fireball
+                    fireSound.volume = 1
+                    fireSound.play()
                     score += 50
                     popups.push({x: obj.x, y:obj.y, type: obj.type, deathSentence: timer+popLifetime})
                     break;
 
                 case "trakt":
                     isTrakt = true
+                    speedBoostSound.currentTime = 2; 
+                    speedBoostSound.play()
                     trakteTimer = timer
                     player.speed += trakteSpeedBoost
                     break;
@@ -368,14 +352,13 @@ function draw() {
     ctx.textAlign = "right";
     ctx.fillText("Rekord: " + highScore, canvas.width - 10, 10);
 
-    // start / end msg
     if (message !== "") {
         ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
         ctx.fillRect(0, 180, canvas.width, 120);
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        let lines = message.split("\n"); // canvas bryter ikke linjer selv
+        let lines = message.split("\n");
         for (let i = 0; i < lines.length; i++) {
             ctx.fillText(lines[i], canvas.width / 2, 220 + i * 28);
         }
@@ -383,6 +366,8 @@ function draw() {
 }
 
 function gameOver() {
+    speedBoostSound.currentTime = 4; 
+    speedBoostSound.pause()
     clearInterval(loop);
     loop = null;
     if (score > 0) {
