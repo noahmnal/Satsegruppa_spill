@@ -1,24 +1,26 @@
-class HelathBar {
-    constructor(x, y, w, h, maxHealth, colour){
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
+class HealthBar {
+    constructor(elementId, maxHealth) {
+        this.element = document.getElementById(elementId);
         this.maxHealth = maxHealth;
-        this.maxWidth = w;
         this.health = maxHealth;
-        this.colour = colour;
-    }
-    show(context) {
-        context.strokeStyle = "#333";
-        context.lineWidth = 4;
-        context.fillStyle = this.colour;
-        context.fillRect(this.x, this.y, this.w, this.h);
-        context.strokeRect(this.x, this.y, this.maxWidth, this.h);
     }
 
     updateHealth(val) {
         this.health = val;
-        this.w = (this.health / this.maxHealth) * this.maxWidth;
+        if (this.health > this.maxHealth) {
+            this.health = this.maxHealth;
+        }
+        if (this.health < 0) {
+            this.health = 0;
+        }
+        this.element.style.width = (this.health / this.maxHealth) * 100 + "%";
+    }
+
+    addHealth(amount) {
+        this.updateHealth(this.health + amount);
+    }
+
+    removeHealth(amount) {
+        this.updateHealth(this.health - amount);
     }
 }

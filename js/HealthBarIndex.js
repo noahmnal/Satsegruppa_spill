@@ -1,29 +1,14 @@
-// dette definerer hvor mye liv man skal ha
-let health = 100;
-let liv = document.getElementById("liv");
+const healthBar = new HealthBar("liv", 100);
 
-//Game over funksjon + skjerm
-let død = false;
-
-function gameOver(){
-    død = true;
-}
-
-// Definerer hvor mye som reduseres hver gang (handling) skjer
-// i dette tilfellet er det hver gang du trykker på "- Liv"
 document.getElementById("minusKnapp").onclick = function () {
-    health -= 10;
-    liv.style.width = health + "%";
-    if (health <= 0) {
-        gameOver();
+    healthBar.removeHealth(10);
+    if (healthBar.health <= 0) {
+        document.getElementById("melding").textContent = "Du døde";
     }
 }
-//dette legger til liv ved å trykke knappen
-// dette kan vi endre til kontakt med forskjellige elementer i spillet
 
 document.getElementById("livKnapp").onclick = function () {
-    if (health < 100) {
-        health += 10;
-        liv.style.width = health + "%";
+    if (healthBar.health > 0) {
+        healthBar.addHealth(10);
     }
 }
