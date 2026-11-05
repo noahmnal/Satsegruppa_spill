@@ -41,3 +41,15 @@ document.getElementById("hsBtn").addEventListener("click", () => {
         window.location.href = "../html/HighScore.html";
     }, 200);
 });
+
+
+//Karakterer knapp
+document.getElementById("chBtn").addEventListener("mouseenter", () => {
+    new Audio("../resources/sounds/hoverclick.wav").play(); // hover-lyd
+});
+document.getElementById("chBtn").addEventListener("click", () => {
+    new Audio("../resources/sounds/clickmain.wav").play(); // klikk-lyd
+    setTimeout(() => {
+        window.location.href = "../html/characters.html";
+    }, 200);
+});

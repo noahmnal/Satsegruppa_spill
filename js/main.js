@@ -8,6 +8,7 @@ const traktDuration = 130;
 const speedBoostSound = new Audio("../resources/sounds/speedboost.wav");
 
 let score = 0;
+let currentPlayerName = "";
 let fallingSpeed = 5;          //objects speed
 let objects = [];
 let popups = []       //list with all objects
@@ -119,6 +120,10 @@ let keysDown = {};
 
 // 2. movement, using keysDown[] to allow user to hold down the button
 document.addEventListener("keydown", function (e) {
+    if (e.target === playerNameInput) {
+        return;
+    }
+
     let key = e.key.toLowerCase();
     keysDown[key] = true;
 
@@ -323,7 +328,7 @@ function draw() {
                 ctx.drawImage(hiroTextImage, p.x-135, p.y-120, size*6.7, size*5.2);
                 break;
             case "fireball":
-                ctx.drawImage(fire50Image, p.x-75, p.y-65, size*3.5, size*2.5);
+                ctx.drawImage(fire50Image, p.x-75, p.y-60, size*3.5, size*2.5);
                 ctx.drawImage(fireTextImage, p.x-110, p.y-130, size*5.7, size*3.7);
                  break;
         }
@@ -371,8 +376,8 @@ function gameOver() {
     clearInterval(loop);
     loop = null;
     if (score > 0) {
-        highScores.push(score);
-        highScores.sort((a, b) => b - a);
+        highScores.push({ name: currentPlayerName, score: score });
+        highScores.sort((a, b) => b.score - a.score);
         highScores.splice(10);
         localStorage.setItem("highscores", JSON.stringify(highScores));
     }
@@ -385,6 +390,7 @@ function gameOver() {
 }
 
 function start() {
+    currentPlayerName = playerNameInput.value.trim();
     const selectedDifficulty = Number(localStorage.getItem("nivå"));
     const d = difficulties[selectedDifficulty] || difficulties[0];
     popups = []  
@@ -405,3 +411,13 @@ function start() {
 }
 
 draw();
+
+const nameForm = document.getElementById("nameForm");
+const playerNameInput = document.getElementById("playerNameInput");
+const playerName = document.getElementById("playerName");
+
+nameForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    playerName.textContent = playerNameInput.value.trim();
+    playerNameInput.blur();
+});

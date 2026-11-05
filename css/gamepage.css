@@ -5,9 +5,44 @@
   background-attachment: fixed;
 }
 
+#playerInfo {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - 340px);
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  width: 300px;
+  height: 80px;
+  padding: 10px;
+  background-color: rgb(93, 130, 50);
+  border: 2px solid #e8dcb5;
+  border-radius: 18px;
+  text-align: center;
+}
+
+#playerName {
+  margin-bottom: 0;
+}
+
 canvas {
   border: 2px solid black;
   position: absolute;
-  left: 100px; 
-  top: 50px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tilbake-knapp {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    padding: 12px 24px;
+    font-family: inherit;       
+    font-size: 24px;
+    background-color: #fdeec9;  
+    color: black;
+    border: 3px solid black;
+    border-radius: 16px;
+    cursor: pointer;
+    z-index: 10;             
 }

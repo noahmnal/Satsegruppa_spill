@@ -13,7 +13,11 @@ if (highscores.length === 0) {
 } else {
     for (let score of highscores) {
         const entry = document.createElement("li");
-        entry.textContent = score + " poeng";
+        if (typeof score === "number") {
+            entry.textContent = score + " poeng";
+        } else {
+            entry.textContent = (score.name ? score.name + ": " : "") + score.score + " poeng";
+        }
         highscoreList.appendChild(entry);
     }
 }
