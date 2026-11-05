@@ -8,6 +8,7 @@ const traktDuration = 130;
 const speedBoostSound = new Audio("../resources/sounds/speedboost.wav");
 
 let score = 0;
+let currentPlayerName = "";
 let fallingSpeed = 5;          //objects speed
 let objects = [];
 let popups = []       //list with all objects
@@ -78,8 +79,17 @@ function loadHighScores() {
             return [];
         }
         return scores
-            .filter(value => Number.isFinite(value) && value > 0)
-            .sort((a, b) => b - a)
+            .map(value => {
+                if (Number.isFinite(value) && value > 0) {
+                    return { name: "", score: value };
+                }
+                if (value && typeof value.name === "string" && Number.isFinite(value.score) && value.score > 0) {
+                    return value;
+                }
+                return null;
+            })
+            .filter(value => value !== null)
+            .sort((a, b) => b.score - a.score)
             .slice(0, 10);
     } catch (error) {
         console.error("Kunne ikke lese lagrede highscores.", error);
@@ -90,9 +100,9 @@ function loadHighScores() {
 const highScores = loadHighScores();
 const savedRecord = Number(localStorage.getItem("rekord"));
 if (localStorage.getItem("highscores") === null && Number.isFinite(savedRecord) && savedRecord > 0) {
-    highScores.push(savedRecord);
+    highScores.push({ name: "", score: savedRecord });
 }
-let highScore = Number.isFinite(savedRecord) ? Math.max(savedRecord, ...highScores) : Math.max(0, ...highScores);
+let highScore = Math.max(savedRecord || 0, ...highScores.map(entry => entry.score));
 
 
 class Player {
@@ -141,6 +151,10 @@ let keysDown = {};
 
 // 2. movement, using keysDown[] to allow user to hold down the button
 document.addEventListener("keydown", function (e) {
+    if (e.target === playerNameInput) {
+        return;
+    }
+
     let key = e.key.toLowerCase();
     keysDown[key] = true;
 
@@ -386,8 +400,8 @@ function gameOver() {
     clearInterval(loop);
     loop = null;
     if (score > 0) {
-        highScores.push(score);
-        highScores.sort((a, b) => b - a);
+        highScores.push({ name: currentPlayerName, score: score });
+        highScores.sort((a, b) => b.score - a.score);
         highScores.splice(10);
         localStorage.setItem("highscores", JSON.stringify(highScores));
     }
@@ -400,6 +414,7 @@ function gameOver() {
 }
 
 function start() {
+    currentPlayerName = playerNameInput.value.trim();
     const selectedDifficulty = Number(localStorage.getItem("nivå"));
     const d = difficulties[selectedDifficulty] || difficulties[0];
     popups = []  
@@ -420,3 +435,13 @@ function start() {
 }
 
 draw();
+
+const nameForm = document.getElementById("nameForm");
+const playerNameInput = document.getElementById("playerNameInput");
+const playerName = document.getElementById("playerName");
+
+nameForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    playerName.textContent = playerNameInput.value.trim();
+    playerNameInput.blur();
+});
