@@ -7,10 +7,13 @@
 
 
 h1 {
-    font-size: large;
+    font-size: 100px;
     position: fixed; 
-    top: 20px;
+    top: 10%;
     left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    
 }
 
 
@@ -39,10 +42,30 @@ body {
     background-repeat: no-repeat; 
 
     display: flex;
-    justify-content: center; /* Sentrerer vannrett */
-    align-items: center;     /* Sentrerer loddrett */
-    height: 100vh;           /* Fyller hele høyden på skjermen */
+    justify-content: center; 
+    align-items: center;    
+    height: 100vh;          
     margin: 0;
+}
+
+
+.tilbake-knapp {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 12px 24px;
+    font-family: inherit;       
+    font-size: 24px;
+    background-color: #fdeec9;  
+    color: black;
+    border: 3px solid black;
+    border-radius: 16px;
+    cursor: pointer;
+    z-index: 10;             
+}
+
+.tilbake-knapp:hover {
+    transform: scale(1.05);
 }
 
 *, *::before, *::after {
