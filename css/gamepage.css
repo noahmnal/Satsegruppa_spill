@@ -31,3 +31,18 @@ canvas {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+.tilbake-knapp {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    padding: 12px 24px;
+    font-family: inherit;       
+    font-size: 24px;
+    background-color: #fdeec9;  
+    color: black;
+    border: 3px solid black;
+    border-radius: 16px;
+    cursor: pointer;
+    z-index: 10;             
+}
