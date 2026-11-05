@@ -6,6 +6,8 @@ const size = canvasWidth / 20;
 const traktDuration = 130;
 
 const speedBoostSound = new Audio("../resources/sounds/speedboost.wav");
+const musikk = new Audio("../resources/sounds/bakgrunnmusikk.wav");
+
 
 let score = 0;
 let currentPlayerName = "";
@@ -373,8 +375,6 @@ function draw() {
 function gameOver() {
     speedBoostSound.currentTime = 4; 
     speedBoostSound.pause()
-    const gameOverSound = new Audio("../resources/sounds/gameover.wav");
-    gameOverSound.play()
     clearInterval(loop);
     loop = null;
     if (score > 0) {
@@ -395,6 +395,10 @@ function start() {
     currentPlayerName = playerNameInput.value.trim();
     const selectedDifficulty = Number(localStorage.getItem("nivå"));
     const d = difficulties[selectedDifficulty] || difficulties[0];
+    musikk.play();
+    musikk.loop = true;      // spiller om og om igjen
+    musikk.volume = 0.5;     // 0.0 til 1.0
+
     popups = []  
     objects = [];
     score = 0;
@@ -423,3 +427,8 @@ nameForm.addEventListener("submit", function (event) {
     playerName.textContent = playerNameInput.value.trim();
     playerNameInput.blur();
 });
+
+
+
+
+ 
