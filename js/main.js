@@ -1,9 +1,87 @@
+
+// Records
+const highScores = JSON.parse(localStorage.getItem("highscores") || "[]");
+const savedRecord = Number(localStorage.getItem("rekord")) || 0;
+if (highScores.length === 0 && savedRecord > 0) {
+    highScores.push(savedRecord);
+}
+let highScore = Math.max(savedRecord, ...highScores);
+
+class HealthBar {
+    constructor(elementId, maxHealth) {
+        this.element = document.getElementById(elementId);
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
+    }
+
+    updateHealth(val) {
+        this.health = val;
+        if (this.health > this.maxHealth) {
+            this.health = this.maxHealth;
+        }
+        if (this.health < 0) {
+            this.health = 0;
+        }
+        this.element.style.width = (this.health / this.maxHealth) * 100 + "%";
+    }
+
+    addHealth(amount) {
+        this.updateHealth(this.health + amount);
+    }
+
+    removeHealth(amount) {
+        this.updateHealth(this.health - amount);
+    }
+}
+
+class Player {
+    constructor() {
+        this.x = 100;
+        this.y = 440;
+        this.w = size;
+        this.h = size;
+        this.baseMoveSpeed = 14
+        this.speed = this.baseMoveSpeed
+    }
+}
+
+class FallingObject {
+    constructor(x, type) {
+        this.x = x;
+        this.y = -50;
+        this.type = type;
+        switch (type) {
+            case "beer":
+                this.w = size
+                this.h = size
+                break;
+            case "hiro":
+                this.w = size*0.9
+                this.h = size
+                break;
+            case "barrel":
+                this.w = size*1.5
+                this.h = size*1.6
+                break;
+            case "fireball":
+                this.w = size*0.6
+                this.h = size*0.9
+                break;
+            case "trakt":
+                this.w = size*1.1
+                this.h = size*1.7
+        }
+    }
+}
+
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const canvasWidth = 1000;
 const canvasHeigth = 500;
 const size = canvasWidth / 20;
 const traktDuration = 130;
+const healthBar = new HealthBar("liv", 100);
+const healthRegenerationInterval = 30;
 
 const speedBoostSound = new Audio("../resources/sounds/speedboost.wav");
 const musikk = new Audio("../resources/sounds/bakgrunnmusikk.wav");
@@ -60,62 +138,6 @@ const hiroTextImage = createImage("hiroshimatext.png")
 
 
 
-function createImage(imgName) {
-    const mapPath = "../resources/images/gameDrawings/"
-    const img =  new Image() 
-    img.src = mapPath + imgName
-    return img;
-}
-
-// Records
-const highScores = JSON.parse(localStorage.getItem("highscores") || "[]");
-const savedRecord = Number(localStorage.getItem("rekord")) || 0;
-if (highScores.length === 0 && savedRecord > 0) {
-    highScores.push(savedRecord);
-}
-let highScore = Math.max(savedRecord, ...highScores);
-
-
-class Player {
-    constructor() {
-        this.x = 100;
-        this.y = 440;
-        this.w = size;
-        this.h = size;
-        this.baseMoveSpeed = 14
-        this.speed = this.baseMoveSpeed
-    }
-}
-
-class FallingObject {
-    constructor(x, type) {
-        this.x = x;
-        this.y = -50;
-        this.type = type;
-        switch (type) {
-            case "beer":
-                this.w = size
-                this.h = size
-                break;
-            case "hiro":
-                this.w = size*0.9
-                this.h = size
-                break;
-            case "barrel":
-                this.w = size*1.5
-                this.h = size*1.6
-                break;
-            case "fireball":
-                this.w = size*0.6
-                this.h = size*0.9
-                break;
-            case "trakt":
-                this.w = size*1.1
-                this.h = size*1.7
-        }
-    }
-}
-
 
 let player = new Player();
 let keysDown = {};
@@ -160,6 +182,16 @@ function movePlayer() {
 
 let timer = 0;
 
+
+
+function createImage(imgName) {
+    const mapPath = "../resources/images/gameDrawings/"
+    const img =  new Image() 
+    img.src = mapPath + imgName
+    return img;
+}
+
+
 function mainLoop() {
     if (Math.random() < spawnRate / 100) {
         spawnObject();
@@ -169,6 +201,10 @@ function mainLoop() {
     checkCollisions();
     if (loop === null) return;   // spillet ble avsluttet i checkCollisions
     removePassed();
+
+    if (timer % healthRegenerationInterval === 0) {
+        healthBar.addHealth(1);
+    }
 
     if (timer % 10 === 0) {
         score++;
@@ -249,11 +285,13 @@ function checkCollisions() {
                     new Audio("../resources/sounds/beerclink.wav").play(); // beer-sound
                     score += 20;
                     break;
+                    healthBar.removeHealth(3);
 
                 case "hiro":
                     let hiroSound = new Audio("../resources/sounds/hirobomb.wav"); // hiro-lyd
                     hiroSound.volume = 0.5
                     hiroSound.play()
+                    healthBar.removeHealth(10);
 
                     score += 100;
                      popups.push({x: obj.x, y:obj.y, type: obj.type, deathSentence: timer+popLifetime})
@@ -264,6 +302,7 @@ function checkCollisions() {
                     fireSound.volume = 1
                     fireSound.play()
                     score += 50
+                    healthBar.removeHealth(5);
                     popups.push({x: obj.x, y:obj.y, type: obj.type, deathSentence: timer+popLifetime})
                     break;
 
@@ -276,6 +315,10 @@ function checkCollisions() {
                     break;
             }
             objects.splice(i, 1);   // removes hit object
+            if (healthBar.health <= 0) {
+                gameOver();
+                return;
+            }
         }
     }
 }
@@ -402,6 +445,7 @@ function start() {
     popups = []  
     objects = [];
     score = 0;
+    healthBar.updateHealth(healthBar.maxHealth);
     fallingSpeed = d.speed;
     spawnRate = d.spawnRate;
     nextLevel = d.nextLevel;
