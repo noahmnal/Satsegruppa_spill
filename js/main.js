@@ -5,7 +5,10 @@ const savedRecord = Number(localStorage.getItem("rekord")) || 0;
 if (highScores.length === 0 && savedRecord > 0) {
     highScores.push(savedRecord);
 }
-let highScore = Math.max(savedRecord, ...highScores);
+let highScore = savedRecord;
+for (let score of highScores) {
+    highScore = Math.max(highScore, typeof score === "number" ? score : Number(score.score) || 0);
+}
 
 class HealthBar {
     constructor(maxHealth) {
