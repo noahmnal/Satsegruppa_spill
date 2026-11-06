@@ -132,8 +132,8 @@ const difficulties = [{
         speed: 7, spawnRate: 8, nextLevel: 60,
         beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 15, barrelRate: 220
     }, {
-        speed: 9, spawnRate: 12, nextLevel: 45,
-        beerRate: 60, hiroRate: 30, fireBallRate: 50, traktRate: 25, barrelRate: 170
+        speed: 9, spawnRate: 22, nextLevel: 45,
+        beerRate: 60, hiroRate: 30, fireBallRate: 50, traktRate: 25, barrelRate: 0
     }
 ];
 
