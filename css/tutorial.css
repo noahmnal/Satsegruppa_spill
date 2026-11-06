@@ -22,7 +22,7 @@
     padding: 21px;
     font-size: 29px;
     font-family: 'MinFavorittFont', sans-serif;
-    background: rgb(93, 130, 50);
+    background: rgb(240, 237, 188);
     color: black;
     border: none;
     border-radius: 18px;
@@ -34,21 +34,21 @@
 }
 
 .apnet_div {
-    background-color: #e8dcb5;
-    color: #3a3329;
+    background-color: #f3daaa;
+    color: #090909;
     font-size: 18px;
     padding: 25px;
-    border: 3px solid #6e8b3d;
+    border: 3px solid #000000;
     line-height: 1.4;
     text-align: left;
 }
 
 .lukket_div {
-    background-color: rgb(93, 130, 50);
+    background-color: rgb(249, 231, 184);
     color: black;
     font-size: 29px;
     padding: 21px;
-    border: 2px solid #e8dcb5;
+    border: 2px solid #010101;
     line-height: normal;
     text-align: center;
     font-family: 'MinFavorittFont', sans-serif;
