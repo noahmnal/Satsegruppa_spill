@@ -1,3 +1,5 @@
+/* fikser egen font */
+
 @font-face {
   font-family: 'MinFavorittFont';
   src: url("../resources/fonts/SuperFuntime-3zpLX.ttf") format('truetype'); 
@@ -54,6 +56,7 @@
     transform: scale(1.05);
 }
 
-*, *::before, *::after {
+/* fikser så fonten er lik for alle elementer selv om bootstrap prøver å endrde */
+*{
   font-family: 'MinFavorittFont', sans-serif !important;
 }
