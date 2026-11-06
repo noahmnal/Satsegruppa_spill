@@ -123,13 +123,13 @@ let barrelRate;
 
 // Playtesting stats
 const difficulties = [{
-        speed: 4, spawnRate: 3, nextLevel: 100,
-        beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 7, barrelRate: 120
+        speed: 4, spawnRate: 5, nextLevel: 100,
+        beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 7, barrelRate: 80
     }, {
-        speed: 5, spawnRate: 4, nextLevel: 80,
+        speed: 5, spawnRate: 6, nextLevel: 80,
         beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 10, barrelRate: 200
     }, {
-        speed: 7, spawnRate: 7, nextLevel: 60,
+        speed: 7, spawnRate: 8, nextLevel: 60,
         beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 15, barrelRate: 220
     }, {
         speed: 9, spawnRate: 12, nextLevel: 45,
@@ -335,7 +335,7 @@ function checkCollisions() {
                     speedBoostSound.play()
                     trakteTimer = timer
                     lifeMulti = 1.5
-                    healthRegenerationInterval = 15
+                    healthRegenerationInterval = 7
                     
                     player.speed += trakteSpeedBoost
                     break;
