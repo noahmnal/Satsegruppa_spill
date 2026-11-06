@@ -8,8 +8,10 @@ if (highScores.length === 0 && savedRecord > 0) {
 let highScore = Math.max(savedRecord, ...highScores);
 
 class HealthBar {
-    constructor(elementId, maxHealth) {
-        this.element = document.getElementById(elementId);
+    constructor(maxHealth) {
+        this.element = document.getElementById("healthbar");
+        this.fillElement = document.getElementById("healthbar-fill");
+        this.textElement = document.getElementById("healthbar-text");
         this.maxHealth = maxHealth;
         this.health = maxHealth;
     }
@@ -22,7 +24,13 @@ class HealthBar {
         if (this.health < 0) {
             this.health = 0;
         }
-        this.element.style.width = (this.health / this.maxHealth) * 100 + "%";
+        this.fillElement.style.width = (this.health / this.maxHealth) * 100 + "%";
+        this.textElement.textContent = this.health + " / " + this.maxHealth;
+    }
+
+    followPlayer(player) {
+        this.element.style.left = player.x + player.w / 2 + 2 + "px";
+        this.element.style.top = player.y - this.element.offsetHeight - 8 + 2 + "px";
     }
 
     addHealth(amount) {
@@ -80,8 +88,8 @@ const canvasWidth = 1000;
 const canvasHeigth = 500;
 const size = canvasWidth / 20;
 const traktDuration = 130;
-const healthBar = new HealthBar("liv", 100);
-const healthRegenerationInterval = 30;
+const healthBar = new HealthBar(100);
+let healthRegenerationInterval = 22;
 
 const speedBoostSound = new Audio("../resources/sounds/speedboost.wav");
 const musikk = new Audio("../resources/sounds/bakgrunnmusikk.wav");
@@ -214,6 +222,7 @@ function mainLoop() {
         if (timer > trakteTimer + traktDuration) {
             isTrakt = false
             player.speed = player.baseMoveSpeed
+            healthRegenerationInterval = 22
             speedBoostSound.pause()
         }
     } else {
@@ -272,6 +281,7 @@ function overlaps(a, b) {
 }
 
 function checkCollisions() {
+    let lifeMulti = 1
     for (let i = objects.length - 1; i >= 0; i--) {
         let obj = objects[i];
 
@@ -284,14 +294,14 @@ function checkCollisions() {
                 case "beer":
                     new Audio("../resources/sounds/beerclink.wav").play(); // beer-sound
                     score += 20;
+                    healthBar.removeHealth(4*lifeMulti);
                     break;
-                    healthBar.removeHealth(3);
 
                 case "hiro":
                     let hiroSound = new Audio("../resources/sounds/hirobomb.wav"); // hiro-lyd
                     hiroSound.volume = 0.5
                     hiroSound.play()
-                    healthBar.removeHealth(10);
+                    healthBar.removeHealth(15*lifeMulti);
 
                     score += 100;
                      popups.push({x: obj.x, y:obj.y, type: obj.type, deathSentence: timer+popLifetime})
@@ -302,7 +312,7 @@ function checkCollisions() {
                     fireSound.volume = 1
                     fireSound.play()
                     score += 50
-                    healthBar.removeHealth(5);
+                    healthBar.removeHealth(8*lifeMulti);
                     popups.push({x: obj.x, y:obj.y, type: obj.type, deathSentence: timer+popLifetime})
                     break;
 
@@ -311,6 +321,9 @@ function checkCollisions() {
                     speedBoostSound.currentTime = 2; 
                     speedBoostSound.play()
                     trakteTimer = timer
+                    lifeMulti = 1.5
+                    healthRegenerationInterval = 15
+                    
                     player.speed += trakteSpeedBoost
                     break;
             }
@@ -346,6 +359,7 @@ function removePassed() {
 function draw() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    healthBar.followPlayer(player);
 
     for (let obj of objects) {
         switch (obj.type) {
@@ -455,6 +469,7 @@ function start() {
     traktRate = d.traktRate;
     barrelRate = d.barrelRate;
     timer = 0;
+    healthRegenerationInterval = 15
     player = new Player();
     message = "";
     loop = setInterval(mainLoop, 30);
