@@ -23,8 +23,7 @@ h1 {
 
 .characterlist {
     position: fixed;
-    top: 200px;                
-    bottom: 150px;            
+    top: 200px;                         
     left: 16px;
     right: 16px;
     display: grid;
@@ -53,6 +52,10 @@ h1 {
     overflow: hidden;        
 }
 
+.character h2 {
+    margin: 0 0 8px 0;
+    font-size: 48px; 
+}
 
 
 .character img {
