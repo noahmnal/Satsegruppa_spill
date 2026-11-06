@@ -96,6 +96,7 @@ let charSelect = Number(localStorage.getItem("char") ?? 0);
 let healthRegenerationInterval = 22;
 
 const speedBoostSound = new Audio("../resources/sounds/speedboost.wav");
+const gameOverSound = new Audio("../resources/sounds/gameover.wav");
 const musikk = new Audio("../resources/sounds/bakgrunnmusikk.wav");
 
 
@@ -335,7 +336,10 @@ function checkCollisions() {
                     speedBoostSound.play()
                     trakteTimer = timer
                     lifeMulti = 1.5
-                    healthRegenerationInterval = 7
+                    if (healthRegenerationInterval > 5) {
+                        healthRegenerationInterval -= 5
+                    }
+    
                     
                     player.speed += trakteSpeedBoost
                     break;
@@ -464,6 +468,8 @@ function draw() {
 function gameOver() {
     speedBoostSound.currentTime = 4; 
     speedBoostSound.pause()
+    gameOverSound.currentTime = 0;
+    gameOverSound.play();
     clearInterval(loop);
     loop = null;
     if (score > 0) {
@@ -501,7 +507,7 @@ function start() {
     traktRate = d.traktRate;
     barrelRate = d.barrelRate;
     timer = 0;
-    healthRegenerationInterval = 15
+    healthRegenerationInterval = 22
     player = new Player();
     message = "";
     loop = setInterval(mainLoop, 30);
