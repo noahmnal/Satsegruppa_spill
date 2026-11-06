@@ -92,6 +92,7 @@ const canvasHeigth = 500;
 const size = canvasWidth / 20;
 const traktDuration = 130;
 const healthBar = new HealthBar(100);
+let charSelect = Number(localStorage.getItem("char") ?? 0);
 let healthRegenerationInterval = 22;
 
 const speedBoostSound = new Audio("../resources/sounds/speedboost.wav");
@@ -146,6 +147,12 @@ const fire50Image = createImage("50fireball.png")
 const fireTextImage = createImage("fireballtext.png")
 const hiro100Image = createImage("100hiroshima.png")
 const hiroTextImage = createImage("hiroshimatext.png")
+const noahImage = createImage("noah.png", "")
+const fridtjofImage = createImage("fridtjof.png", "")
+const casparImage = createImage("caspar.png", "")
+const sanderImage = createImage("sander.png", "")
+const fredrikImage = createImage("fredrik.png", "")
+
 
 
 
@@ -195,9 +202,12 @@ let timer = 0;
 
 
 
-function createImage(imgName) {
-    const mapPath = "../resources/images/gameDrawings/"
-    const img =  new Image() 
+function createImage(imgName, directory = "gameDrawings") {
+    let mapPath = "../resources/images/";
+    if (directory) {
+        mapPath += directory + "/";
+    }
+    const img = new Image();
     img.src = mapPath + imgName
     return img;
 }
@@ -396,8 +406,27 @@ function draw() {
         }
     }
 
-    ctx.fillStyle = "#4da6ff";
-    ctx.fillRect(player.x, player.y, player.w, player.h);
+    switch (charSelect) {
+        case 0:
+            ctx.drawImage(fridtjofImage, player.x, player.y, size, size);
+            break;
+        case 1:
+            ctx.drawImage(noahImage, player.x, player.y, size, size);
+            break;
+        case 2:
+            ctx.drawImage(sanderImage, player.x, player.y, size, size);
+            break;
+        case 3:
+            ctx.drawImage(fredrikImage, player.x, player.y, size, size);
+            break;
+        case 4:
+            ctx.drawImage(casparImage, player.x, player.y, size, size);
+            break;
+        default:
+            ctx.fillStyle = "#4da6ff";
+            ctx.fillRect(player.x, player.y, player.w, player.h);
+    }
+
 
     // Hitboxes
     if (showHitboxes) {
@@ -458,7 +487,7 @@ function start() {
     musikk.play();
     musikk.loop = true;      // spiller om og om igjen
     musikk.volume = 0.5;     // 0.0 til 1.0
-
+    charSelect = Number(localStorage.getItem("char"));
     popups = []  
     objects = [];
     score = 0;

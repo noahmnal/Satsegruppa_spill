@@ -8,3 +8,27 @@ document.getElementById("tilbakeBtn").addEventListener("click", () => {
     }, 200);
 });
 
+
+
+document.getElementById("Fridtjof").addEventListener("click", () => {
+    localStorage.setItem("char", 0)
+     window.location.href = "../html/mainPage.html";
+})
+
+document.getElementById("Noah").addEventListener("click", () => {
+    localStorage.setItem("char", 1)
+     window.location.href = "../html/mainPage.html";
+
+})
+document.getElementById("Sander").addEventListener("click", () => {
+    localStorage.setItem("char", 2)
+     window.location.href = "../html/mainPage.html";
+})
+document.getElementById("Fredrik").addEventListener("click", () => {
+    localStorage.setItem("char", 3)
+     window.location.href = "../html/mainPage.html";
+})
+document.getElementById("Caspar").addEventListener("click", () => {
+    localStorage.setItem("char", 4)
+     window.location.href = "../html/mainPage.html";
+})
