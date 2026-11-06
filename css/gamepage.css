@@ -64,6 +64,14 @@
     z-index: 10;             
 }
 
+#nivåBtn {
+  position: fixed;
+  left: 25%;
+  top: 10%;
+  width: 200px;
+  box-sizing: border-box;
+}
+
 .tilbakeBtn:hover {
     transform: scale(1.05);
 }
