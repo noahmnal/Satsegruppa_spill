@@ -174,17 +174,17 @@ document.addEventListener("keyup", function (e) {
 
 
 function movePlayer() {
-    if ((keysDown["arrowup"] || keysDown["w"]) && player.y > 0) {
-        player.y -= player.speed;
+    if (keysDown["arrowup"] || keysDown["w"]) {
+        player.y = Math.max(0, player.y - player.speed);
     }
-    if ((keysDown["arrowdown"] || keysDown["s"]) && player.y < canvasHeigth - player.h) {
-        player.y += player.speed;
+    if (keysDown["arrowdown"] || keysDown["s"]) {
+        player.y = Math.min(canvasHeigth - player.h, player.y + player.speed);
     }
-    if ((keysDown["arrowleft"] || keysDown["a"]) && player.x > 0) {
-        player.x -= player.speed;
+    if (keysDown["arrowleft"] || keysDown["a"]) {
+        player.x = Math.max(0, player.x - player.speed);
     }
-    if ((keysDown["arrowright"] || keysDown["d"]) && player.x < canvasWidth - player.w) {
-        player.x += player.speed;
+    if (keysDown["arrowright"] || keysDown["d"]) {
+        player.x = Math.min(canvasWidth - player.w, player.x + player.speed);
     }
 }
 
@@ -294,14 +294,14 @@ function checkCollisions() {
                 case "beer":
                     new Audio("../resources/sounds/beerclink.wav").play(); // beer-sound
                     score += 20;
-                    healthBar.removeHealth(4*lifeMulti);
+                    healthBar.removeHealth(3*lifeMulti);
                     break;
 
                 case "hiro":
                     let hiroSound = new Audio("../resources/sounds/hirobomb.wav"); // hiro-lyd
                     hiroSound.volume = 0.5
                     hiroSound.play()
-                    healthBar.removeHealth(15*lifeMulti);
+                    healthBar.removeHealth(12*lifeMulti);
 
                     score += 100;
                      popups.push({x: obj.x, y:obj.y, type: obj.type, deathSentence: timer+popLifetime})
@@ -312,7 +312,7 @@ function checkCollisions() {
                     fireSound.volume = 1
                     fireSound.play()
                     score += 50
-                    healthBar.removeHealth(8*lifeMulti);
+                    healthBar.removeHealth(6*lifeMulti);
                     popups.push({x: obj.x, y:obj.y, type: obj.type, deathSentence: timer+popLifetime})
                     break;
 
