@@ -124,16 +124,16 @@ let barrelRate;
 
 // Playtesting stats
 const difficulties = [{
-        speed: 4, spawnRate: 5, nextLevel: 100,
-        beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 7, barrelRate: 80
+        speed: 5, spawnRate: 9, nextLevel: 100,
+        beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 7, barrelRate: 100
     }, {
-        speed: 5, spawnRate: 6, nextLevel: 80,
-        beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 10, barrelRate: 200
+        speed: 6, spawnRate: 10, nextLevel: 80,
+        beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 10, barrelRate: 140
     }, {
-        speed: 7, spawnRate: 8, nextLevel: 60,
-        beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 15, barrelRate: 220
+        speed: 8, spawnRate: 11, nextLevel: 60,
+        beerRate: 100, hiroRate: 15, fireBallRate: 25, traktRate: 15, barrelRate: 180
     }, {
-        speed: 9, spawnRate: 22, nextLevel: 45,
+        speed: 9, spawnRate: 22, nextLevel: 55,
         beerRate: 60, hiroRate: 30, fireBallRate: 50, traktRate: 25, barrelRate: 0
     }
 ];
