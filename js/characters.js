@@ -7,3 +7,4 @@ document.getElementById("tilbakeBtn").addEventListener("click", () => {
         window.location.href = "../html/mainPage.html";
     }, 200);
 });
+

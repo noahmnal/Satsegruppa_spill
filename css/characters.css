@@ -17,23 +17,65 @@ h1 {
 }
 
 
+h1 {
+    position: fixed;
+    top: 3vh;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-size: clamp(32px, 6vw, 80px);
+    color: white;
+    white-space: nowrap;
+    text-align: center;
+    z-index: 20;              
+    pointer-events: none;
+}
+
+.characterlist {
+    position: fixed;
+    top: 200px;                
+    bottom: 150px;            
+    left: 16px;
+    right: 16px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 100%;
+    gap: 16px;
+    z-index: 1;
+}
+
 .character {
-    width: 600px;
-    padding: 21px;
-    font-size: 29px;
+    position: static;
+    margin: 0;
+    width: auto;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
     border: 2px solid rgb(0, 0, 0);
     border-radius: 18px;
     background: rgb(255, 238, 197);
     color: rgb(0, 0, 0);
-   
-
+    text-align: center;
+    overflow: hidden;         /* ingenting sprenger boksen */
 }
 
-.character:hover { 
-    transform: scale(1.08);         
-    background: rgb(230, 208, 166);
-    box-shadow: 0 0 20px #4af; 
-}   
+
+.character img {
+    flex: 1;                  /* fyller resten av boksen */
+    min-height: 0;
+    width: 100%;
+    height: 0;                /* hindrer at bildet bruker sin egen størrelse */
+    object-fit: contain;      /* hele bildet vises */
+    pointer-events: none;
+}
+
+.character:hover {
+    transform: scale(1.04);
+}
 
 body {
     background-image: url("../resources/images/mainbackground.jpg");
