@@ -49,7 +49,7 @@ body {
 }
 
 
-.tilbake-knapp {
+.tilbakeBtn {
     position: fixed;
     bottom: 30px;
     left: 30px;
@@ -64,7 +64,7 @@ body {
     z-index: 10;             
 }
 
-.tilbake-knapp:hover {
+.tilbakeBtn:hover {
     transform: scale(1.05);
 }
 

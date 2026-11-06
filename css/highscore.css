@@ -1,4 +1,9 @@
-
+@font-face {
+  font-family: 'MinFavorittFont';
+  src: url("../resources/fonts/SuperFuntime-3zpLX.ttf") format('truetype'); 
+  font-weight: normal;
+  font-style: normal;
+}
 
 .leaderboard {
     width: 600px;
@@ -30,7 +35,7 @@
 }
 
 
-.tilbake-knapp {
+.tilbakeBtn {
     position: fixed;
     bottom: 30px;
     left: 30px;
@@ -43,4 +48,12 @@
     border-radius: 16px;
     cursor: pointer;
     z-index: 10;             
+}
+
+.tilbakeBtn:hover {
+    transform: scale(1.05);
+}
+
+*, *::before, *::after {
+  font-family: 'MinFavorittFont', sans-serif !important;
 }

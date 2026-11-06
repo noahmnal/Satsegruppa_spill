@@ -40,7 +40,7 @@
   border: 2px solid black;
 }
 
-.tilbake-knapp {
+.tilbakeBtn {
     position: fixed;
     bottom: 30px;
     left: 30px;
@@ -53,6 +53,10 @@
     border-radius: 16px;
     cursor: pointer;
     z-index: 10;             
+}
+
+.tilbakeBtn:hover {
+    transform: scale(1.05);
 }
 
 #healthbar {
