@@ -26,8 +26,10 @@
 .gameBtn {
   padding: 12px 0;
 
-  background-color: #a9a9a9;
-  border: 6px solid #6e6e6e;
+  background: url("../resources/images/bokser.png") center / 100% 100% no-repeat;
+  border: none;
+  color: #4a3520;
+  text-shadow: none;
   border-radius: 14px;
 
   font-family: "MinFavorittFont", sans-serif;
