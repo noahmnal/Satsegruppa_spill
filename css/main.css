@@ -70,6 +70,14 @@
   animation: regnbue 1s linear infinite;
 }
 
+.character img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain; /* beholder proporsjonene */
+    margin-top: 10px;
+    pointer-events: none; /* klikket går til boksen, ikke bildet */
+}
+
 @keyframes regnbue {
   to { filter: hue-rotate(360deg); }
 }

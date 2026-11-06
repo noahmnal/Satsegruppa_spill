@@ -114,3 +114,7 @@
 .tilbakeBtn:hover {
     transform: scale(1.05);
 }
+
+*, *::before, *::after {
+  font-family: 'MinFavorittFont', sans-serif !important;
+}
