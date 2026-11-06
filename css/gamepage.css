@@ -24,16 +24,11 @@
   margin-bottom: 0;
 }
 
-<<<<<<< HEAD
 #game-stage {
-=======
-#bok {
->>>>>>> 38f837198697d672fd10a1cdab09fce4b04b09aa
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-<<<<<<< HEAD
   width: 1004px;
   height: 504px;
 }
@@ -43,16 +38,6 @@
   left: 0;
   top: 0;
   border: 2px solid black;
-=======
-  width: 1300px;
-  height: 813px;
-  padding-bottom: 60px;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: url("../resources/images/bok.jpg") center / 100% 100% no-repeat;
->>>>>>> 38f837198697d672fd10a1cdab09fce4b04b09aa
 }
 
 .tilbake-knapp {
