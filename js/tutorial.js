@@ -4,10 +4,19 @@ function klikk(boks) {
     boks.dataset.apen = apen;
     if (apen === true) {
         if (boks.id === 'hvordan_spille') {
-            boks.innerHTML = `Målet med spillet er å få så mange poeng som mulig ved å fange gjenstander som faller ned på boka. Man beveger karakteren frem og tilbake nederst på skjermen for å fange dem før de treffer bakken. Man prøver å å følge med på tingene som faller ned og bevege seg så raskt nok til å rekke bort til riktig sted. Pils gir deg 20 poeng, fireball 50 poeng, og Hiroshima gir 100. Trakten gjør at karakteren beveger seg raskere. Da blir det lettere å rekke bort til gjenstandene som faller ned. Men Hvis man er nær Tenk-boka dør man og spillet er over, så den må man dodge. Øverst på skjermen går poengene opp mens du spiller, ved siden av står det hvilken rekord du må prøve å slå. Målet er rett og slett å fange flest mulig av de riktige tingene, unngå Tenk-bøkene og sette en ny rekord som kommer på leaderboard.`;
+            boks.innerHTML = `Målet er å få flest mulig enheter/poeng uten å treffe Tenk-boka, 
+            eller bli for full . </br> Pils = 20 poeng </br> Fireball = 50 poeng </br> Hiroshima = 100 poeng </br>
+            </br> MEN - hver gjenstand du tar minker også health bar-en, så du kan ikke samle for mange for fort. </br>
+            Blir du for full og health bar-en går til 0, eller treffer du Tenk-boka, er spillet over. 
+            </br> Trakten gjør karakteren raskere og vanskeligere å kontrollere, men gjør også at du regenerer liv raksere. </br>
+             </br>Poengsummen vises øverst sammen med rekorden. </br>` ; 
         }
         if (boks.id === 'keybinds') {
-            boks.innerHTML = `Du styrer firkanten med WASD-tastene eller piltastene. Begge funker på samme måte, så det er bare å bruke det man synes er lettest. </br> A eller ← er venstre. </br>D eller er høyre. </br>W eller ↑ er opp. </br>S eller ↓ er nedover. </br>Spillet er 2D. Smart å holde inne en tast for å bevege seg kontinuerlig i en retning, men husk at de blir mer sensitive med trakta.`;
+            boks.innerHTML = `Du styrer karakteren med WASD-tastene eller piltastene. Begge funker på 
+            samme måte, så det er bare å bruke det man synes er lettest. 
+            </br> A eller ← er venstre. </br>D eller er høyre. </br>W eller ↑ er opp. </br>S eller ↓ er nedover. 
+            </br>Spillet er 2D. Smart å holde inne en tast for å bevege seg kontinuerlig i en retning, men husk 
+            at de blir mer sensitive med trakta.`;
         }
         boks.classList.remove('lukket_div');
         boks.classList.add('apnet_div');

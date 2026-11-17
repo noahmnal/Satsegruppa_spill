@@ -93,7 +93,8 @@ const size = canvasWidth / 20;
 const traktDuration = 130;
 const healthBar = new HealthBar(100);
 let charSelect = Number(localStorage.getItem("char") ?? 0);
-let healthRegenerationInterval = 22;
+let healthRegenerationInterval = 17;
+let baseHealthRegenerationInterval = 17;
 
 const speedBoostSound = new Audio("../resources/sounds/speedboost.wav");
 const gameOverSound = new Audio("../resources/sounds/gameover.wav");
@@ -124,16 +125,16 @@ let barrelRate;
 
 // Playtesting stats
 const difficulties = [{
-        speed: 5, spawnRate: 9, nextLevel: 100,
+        speed: 5, spawnRate: 9, nextLevel: 100, healthRegenerationInterval: 13,
         beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 7, barrelRate: 100
     }, {
-        speed: 6, spawnRate: 10, nextLevel: 80,
-        beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 10, barrelRate: 140
+        speed: 6, spawnRate: 10, nextLevel: 80, healthRegenerationInterval: 13,
+        beerRate: 100, hiroRate: 10, fireBallRate: 20, traktRate: 10, barrelRate: 130
     }, {
-        speed: 8, spawnRate: 11, nextLevel: 60,
-        beerRate: 100, hiroRate: 15, fireBallRate: 25, traktRate: 15, barrelRate: 180
+        speed: 8, spawnRate: 11, nextLevel: 60, healthRegenerationInterval: 15,
+        beerRate: 100, hiroRate: 15, fireBallRate: 25, traktRate: 15, barrelRate: 140
     }, {
-        speed: 9, spawnRate: 22, nextLevel: 55,
+        speed: 9, spawnRate: 22, nextLevel: 55, healthRegenerationInterval: 22,
         beerRate: 60, hiroRate: 30, fireBallRate: 50, traktRate: 25, barrelRate: 0
     }
 ];
@@ -221,7 +222,7 @@ function mainLoop() {
     moveObjects();
     movePlayer();
     checkCollisions();
-    if (loop === null) return;   // spillet ble avsluttet i checkCollisions
+    if (loop === null) return;
     removePassed();
 
     if (timer % healthRegenerationInterval === 0) {
@@ -236,7 +237,7 @@ function mainLoop() {
         if (timer > trakteTimer + traktDuration) {
             isTrakt = false
             player.speed = player.baseMoveSpeed
-            healthRegenerationInterval = 22
+            healthRegenerationInterval = baseHealthRegenerationInterval
             speedBoostSound.pause()
         }
     } else {
@@ -276,7 +277,17 @@ function dropTable() {
 //spawns an object at the top of the screen
 function spawnObject() {
     let obj = new FallingObject(0, dropTable());
-    obj.x = Math.random() * (canvasWidth - obj.w);  // holder seg innenfor brettet
+    obj.x = Math.random() * (canvasWidth - obj.w);
+    let run = true
+    while (run) {
+        obj.x = Math.random() * (canvasWidth - obj.w);
+        if (objects.length == 0) {run = false}
+        for (let o of objects) {
+            if (!overlaps(obj, o)) {
+                run = false;
+            }
+        }
+    }
     objects.push(obj);
 }
 
@@ -337,7 +348,7 @@ function checkCollisions() {
                     trakteTimer = timer
                     lifeMulti = 1.5
                     if (healthRegenerationInterval > 5) {
-                        healthRegenerationInterval -= 5
+                        healthRegenerationInterval -= 4
                     }
     
                     
@@ -501,13 +512,14 @@ function start() {
     fallingSpeed = d.speed;
     spawnRate = d.spawnRate;
     nextLevel = d.nextLevel;
+    baseHealthRegenerationInterval = d.healthRegenerationInterval;
+    healthRegenerationInterval = baseHealthRegenerationInterval;
     beerRate = d.beerRate;
     hiroRate = d.hiroRate;
     fireBallRate = d.fireBallRate;
     traktRate = d.traktRate;
     barrelRate = d.barrelRate;
     timer = 0;
-    healthRegenerationInterval = 22
     player = new Player();
     message = "";
     loop = setInterval(mainLoop, 30);
