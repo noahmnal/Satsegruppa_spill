@@ -6,16 +6,15 @@ function klikk(boks) {
         if (boks.id === 'hvordan_spille') {
             boks.innerHTML = `Målet er å få flest mulig enheter/poeng uten å treffe Tenk-boka, 
             eller bli for full . </br> Pils = 20 poeng </br> Fireball = 50 poeng </br> Hiroshima = 100 poeng </br>
+            </br> Trakten gjør karakteren raskere og vanskeligere å kontrollere, men gjør også at du regenerer liv raksere. </br>
             </br> MEN - hver gjenstand du tar minker også health bar-en, så du kan ikke samle for mange for fort. </br>
             Blir du for full og health bar-en går til 0, eller treffer du Tenk-boka, er spillet over. 
-            </br> Trakten gjør karakteren raskere og vanskeligere å kontrollere, men gjør også at du regenerer liv raksere. </br>
              </br>Poengsummen vises øverst sammen med rekorden. </br>` ; 
         }
         if (boks.id === 'keybinds') {
-            boks.innerHTML = `Du styrer karakteren med WASD-tastene eller piltastene. Begge funker på 
-            samme måte, så det er bare å bruke det man synes er lettest. 
+            boks.innerHTML = `Du styrer karakteren med WASD-tastene eller piltastene. 
             </br> A eller ← er venstre. </br>D eller er høyre. </br>W eller ↑ er opp. </br>S eller ↓ er nedover. 
-            </br>Spillet er 2D. Smart å holde inne en tast for å bevege seg kontinuerlig i en retning, men husk 
+            </br>Smart å holde inne en tast for å bevege seg kontinuerlig i en retning, men husk 
             at de blir mer sensitive med trakta.`;
         }
         boks.classList.remove('lukket_div');
