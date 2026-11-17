@@ -9,7 +9,11 @@ function klikk(boks) {
             </br> Trakten gjør karakteren raskere og vanskeligere å kontrollere, men gjør også at du regenerer liv raksere. </br>
             </br> MEN - hver gjenstand du tar minker også health bar-en, så du kan ikke samle for mange for fort. </br>
             Blir du for full og health bar-en går til 0, eller treffer du Tenk-boka, er spillet over. 
-             </br>Poengsummen vises øverst sammen med rekorden. </br>` ; 
+            </br> 1. Velg en karakter</br>
+            2. Trykk "Start spill" </br>
+            3. Velg vanskelighetsgrad </br>
+            4. Skriv inn navnet ditt på spillsiden for å lagre poengsummen 
+            som vises øverst sammen med rekorden. </br>` ; 
         }
         if (boks.id === 'keybinds') {
             boks.innerHTML = `Du styrer karakteren med WASD-tastene eller piltastene. 
