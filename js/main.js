@@ -162,7 +162,6 @@ const fredrikImage = createImage("fredrik.png", "")
 let player = new Player();
 let keysDown = {};
 
-// 2. movement, using keysDown[] to allow user to hold down the button
 document.addEventListener("keydown", function (e) {
     if (e.target === playerNameInput) {
         return;
@@ -320,7 +319,7 @@ function checkCollisions() {
                     new Audio("../resources/sounds/beerclink.wav").play(); // beer-sound
                     score += 20;
                     healthBar.removeHealth(3*lifeMulti);
-                    break;
+                    break; //
 
                 case "hiro":
                     let hiroSound = new Audio("../resources/sounds/hirobomb.wav"); // hiro-lyd
@@ -356,7 +355,7 @@ function checkCollisions() {
                     break;
             }
             objects.splice(i, 1);   // removes hit object
-            if (healthBar.health <= 0) {
+            if (healthBar.health <= 0) { //
                 gameOver();
                 return;
             }
@@ -386,12 +385,12 @@ function removePassed() {
 
 function draw() {
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height); //
     healthBar.followPlayer(player);
 
     for (let obj of objects) {
         switch (obj.type) {
-            case "beer":
+            case "beer": //
                 ctx.drawImage(beerImage, obj.x, obj.y, obj.w, obj.h);
                 break;
             case "hiro":
@@ -405,6 +404,9 @@ function draw() {
                  break;
             case "trakt":
                  ctx.drawImage(traktImage, obj.x-173, obj.y-75, size*10, size*6.5);
+                 break;
+            default:
+                break;
         }
     }
 
